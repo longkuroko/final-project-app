@@ -7,7 +7,46 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "lint": "eslint --ext js,jsx src/ ./App.js ./babel.config.js",
+    "lint:fix": "eslint --fix --ext js,jsx src/ ./App.js ./babel.config.js",
+    "prettier": "prettier --check \"src/**/(**.js||**.jsx)\" \"./App.js\" \"./babel.config.js\"",
+    "prettier:fix": "prettier --write \"src/**/(**.js||**.jsx)\" \"./App.js\" \"./babel.config.js\""
+  },
+  "eslintConfig": {
+    "extends": [
+      "airbnb",
+      "airbnb/hooks",
+      "prettier",
+      "prettier/react",
+      "plugin:prettier/recommended"
+    ],
+    "plugins": [
+      "prettier"
+    ],
+    "parserOptions": {
+      "ecmaFeatures": {
+        "jsx": true
+      },
+      "ecmaVersion": 2018,
+      "sourceType": "module"
+    },
+    "rules": {
+      "prettier/prettier": [
+        "warn",
+        {
+          "arrowParens": "avoid",
+          "printWidth": 80,
+          "semi": false,
+          "useTabs": true,
+          "tabWidth": 2,
+          "singleQuote": true,
+          "jsxSingleQuote": true,
+          "trailingComma": "none",
+          "bracketSameLine": true
+        }
+      ]
+    }
   },
   "dependencies": {
     "expo": "~44.0.0",
@@ -18,7 +57,16 @@
     "react-native-web": "0.17.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.9"
+    "@babel/core": "^7.12.9",
+    "eslint": "8.2.0",
+    "eslint-config-airbnb": "19.0.4",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "2.25.3",
+    "eslint-plugin-jsx-a11y": "6.5.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "7.28.0",
+    "eslint-plugin-react-hooks": "4.3.0",
+    "prettier": "^2.5.1"
   },
   "private": true
 }
