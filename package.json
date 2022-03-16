@@ -24,13 +24,6 @@
     "plugins": [
       "prettier"
     ],
-    "parserOptions": {
-      "ecmaFeatures": {
-        "jsx": true
-      },
-      "ecmaVersion": 2018,
-      "sourceType": "module"
-    },
     "rules": {
       "prettier/prettier": [
         "warn",
@@ -46,6 +39,13 @@
           "bracketSameLine": true
         }
       ]
+    },
+    "parserOptions": {
+      "ecmaVersion": 2017,
+      "sourceType": "module"
+    },
+    "env": {
+      "es6": true
     }
   },
   "dependencies": {
