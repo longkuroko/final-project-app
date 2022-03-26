@@ -8,8 +8,8 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "lint": "eslint --ext js,jsx src/ ./App.js ./babel.config.js",
-    "lint:fix": "eslint --fix --ext js,jsx src/ ./App.js ./babel.config.js",
+    "lint": "eslint --ext js,jsx src/ ./App.js",
+    "lint:fix": "eslint --fix --ext js,jsx src/ ./App.js",
     "prettier": "prettier --check \"src/**/(**.js||**.jsx)\" \"./App.js\" \"./babel.config.js\"",
     "prettier:fix": "prettier --write \"src/**/(**.js||**.jsx)\" \"./App.js\" \"./babel.config.js\""
   },
@@ -17,21 +17,23 @@
     "extends": [
       "airbnb",
       "airbnb/hooks",
-      "prettier",
-      "prettier/react",
-      "plugin:prettier/recommended"
+      "prettier"
     ],
     "plugins": [
       "prettier"
     ],
-    "parserOptions": {
-      "ecmaFeatures": {
-        "jsx": true
-      },
-      "ecmaVersion": 2018,
-      "sourceType": "module"
-    },
     "rules": {
+      "import/prefer-default-export": "off",
+      "react/jsx-filename-extension": [
+        1,
+        {
+          "extensions": [
+            ".js",
+            ".jsx"
+          ]
+        }
+      ],
+      "arrow-body-style": "off",
       "prettier/prettier": [
         "warn",
         {
@@ -45,19 +47,47 @@
           "trailingComma": "none",
           "bracketSameLine": true
         }
+      ],
+      "react/function-component-definition": [
+        2,
+        {
+          "namedComponents": "arrow-function",
+          "unnamedComponents": "arrow-function"
+        }
       ]
+    },
+    "parserOptions": {
+      "ecmaVersion": 6,
+      "sourceType": "module",
+      "ecmaFeatures": {
+        "jsx": true,
+        "modules": true,
+        "experimentalObjectRestSpread": true
+      }
+    },
+    "env": {
+      "es6": true
     }
   },
   "dependencies": {
+    "@react-navigation/drawer": "^6.3.2",
+    "@react-navigation/native": "^6.0.8",
+    "@react-navigation/native-stack": "^6.5.2",
+    "@react-navigation/stack": "^6.1.1",
     "expo": "~44.0.0",
     "expo-status-bar": "~1.2.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-native": "0.64.3",
+    "react-native-gesture-handler": "~2.1.0",
+    "react-native-reanimated": "~2.3.1",
+    "react-native-safe-area-context": "3.3.2",
+    "react-native-screens": "~3.10.1",
     "react-native-web": "0.17.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
+    "@babel/eslint-parser": "^7.17.0",
     "eslint": "8.2.0",
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-prettier": "^8.5.0",
