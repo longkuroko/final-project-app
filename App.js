@@ -1,20 +1,13 @@
+import React from 'react'
 import { StatusBar, Text, View } from 'react-native'
+import { styles } from './AppStyle'
 
+// eslint-disable-next-line react/function-component-definition
 export default function App() {
 	return (
-		<View style={styles.container}>
-			<Text>
-			</Text>
-			<StatusBar style='auto' />
+		<View styles={styles.container}>
+			<Text>Hello</Text>
+			<StatusBar styles='auto' />
 		</View>
 	)
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: '#fff',
-		alignItems: 'center',
-		justifyContent: 'center'
-	}
-})
