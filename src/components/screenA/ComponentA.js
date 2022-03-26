@@ -1,12 +1,12 @@
 import React from 'react'
 import { Text, View } from 'react-native'
 
-const ScreenB = () => {
+const ComponentA = () => {
 	return (
 		<View>
-			<Text>Hello, I am Khoi !</Text>
+			<Text>Component In Screen A</Text>
 		</View>
 	)
 }
 
-export default ScreenB
+export default ComponentA

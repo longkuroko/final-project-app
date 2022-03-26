@@ -1,25 +1,15 @@
 import React from 'react'
 import 'react-native-gesture-handler'
 import { NavigationContainer } from '@react-navigation/native'
-import { createDrawerNavigator } from '@react-navigation/drawer'
-import ScreenA from './src/screen/ScreenA'
-import ScreenB from './src/screen/ScreenB'
-
-const Drawer = createDrawerNavigator()
-
-const MainScreen = () => {
-	return (
-		<Drawer.Navigator>
-			<Drawer.Screen name='ScreenA' component={ScreenA} />
-			<Drawer.Screen name='ScreenB' component={ScreenB} />
-		</Drawer.Navigator>
-	)
-}
+import AppContext from './src/context/UserContext'
+import MainScreen from './src/screen/ScreenContainer'
 
 const App = () => {
 	return (
 		<NavigationContainer>
-			<MainScreen />
+			<AppContext>
+				<MainScreen />
+			</AppContext>
 		</NavigationContainer>
 	)
 }
