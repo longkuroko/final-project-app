@@ -1,13 +1,27 @@
 import React from 'react'
-import { StatusBar, Text, View } from 'react-native'
-import { styles } from './AppStyle'
+import 'react-native-gesture-handler'
+import { NavigationContainer } from '@react-navigation/native'
+import { createDrawerNavigator } from '@react-navigation/drawer'
+import ScreenA from './src/screen/ScreenA'
+import ScreenB from './src/screen/ScreenB'
 
-// eslint-disable-next-line react/function-component-definition
-export default function App() {
+const Drawer = createDrawerNavigator()
+
+const MainScreen = () => {
 	return (
-		<View styles={styles.container}>
-			<Text>Hello</Text>
-			<StatusBar styles='auto' />
-		</View>
+		<Drawer.Navigator>
+			<Drawer.Screen name='ScreenA' component={ScreenA} />
+			<Drawer.Screen name='ScreenB' component={ScreenB} />
+		</Drawer.Navigator>
 	)
 }
+
+const App = () => {
+	return (
+		<NavigationContainer>
+			<MainScreen />
+		</NavigationContainer>
+	)
+}
+
+export default App
