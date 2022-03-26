@@ -8,8 +8,8 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "lint": "eslint --ext js,jsx src/ ./App.js ./babel.config.js",
-    "lint:fix": "eslint --fix --ext js,jsx src/ ./App.js ./babel.config.js",
+    "lint": "eslint --ext js,jsx src/ ./App.js",
+    "lint:fix": "eslint --fix --ext js,jsx src/ ./App.js",
     "prettier": "prettier --check \"src/**/(**.js||**.jsx)\" \"./App.js\" \"./babel.config.js\"",
     "prettier:fix": "prettier --write \"src/**/(**.js||**.jsx)\" \"./App.js\" \"./babel.config.js\""
   },
