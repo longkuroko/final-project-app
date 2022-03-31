@@ -1,13 +1,6 @@
 import React, { useState } from 'react'
-import {
-	TextInput,
-	View,
-	Text,
-	KeyboardAvoidingView,
-	Keyboard,
-	TouchableWithoutFeedback,
-	Button
-} from 'react-native'
+import { TextInput, View, Text } from 'react-native'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 import { styles } from './ComponentLogin.style'
 
 const ComponentLogin = () => {
@@ -16,33 +9,37 @@ const ComponentLogin = () => {
 		password: ''
 	})
 	return (
-		<KeyboardAvoidingView style={styles.containerView} behavior='padding'>
-			<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-				<View style={styles.loginScreenContainer}>
-					<View style={styles.loginFormView}>
-						<Text style={styles.logoText}>Long Shopping</Text>
-						<TextInput
-							placeholder='username or email'
-							placeholderColor='#c4c3cb'
-							style={styles.loginFormTextInput}
-							onChangeText={email => {
-								setAccount({ ...account, email })
-							}}
-						/>
-						<TextInput
-							placeholder='Password'
-							placeholderColor='#c4c3cb'
-							style={styles.loginFormTextInput}
-							secureTextEntry
-							onChangeText={password => {
-								setAccount({ ...account, password })
-							}}
-						/>
-						<Button style={styles.loginButton} title='Login' />
-					</View>
-				</View>
-			</TouchableWithoutFeedback>
-		</KeyboardAvoidingView>
+		<View style={styles.container}>
+			<View style={styles.inputView}>
+				<TextInput
+					style={styles.TextInput}
+					placeholder='Enter your email'
+					placeholderTextColor='#003f5c'
+					onChangeText={email => {
+						setAccount({ ...account, email })
+					}}
+				/>
+			</View>
+			<View>
+				<TextInput
+					style={styles.TextInput}
+					placeholder='Enter your password'
+					placeholderTextColor='#003f5c'
+					onChangeText={password => {
+						setAccount({ ...account, password })
+					}}
+					secureTextEntry
+				/>
+			</View>
+
+			<TouchableOpacity>
+				<Text style={styles.forgot_button}>Forgot your passoword?</Text>
+			</TouchableOpacity>
+
+			<TouchableOpacity style={styles.loginBtn}>
+				<Text style={styles.loginText}>Login</Text>
+			</TouchableOpacity>
+		</View>
 	)
 }
 export default ComponentLogin
