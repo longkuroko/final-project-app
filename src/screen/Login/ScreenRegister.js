@@ -1,12 +1,7 @@
 import React from 'react'
-import { View } from 'react-native'
 import ComponentRegister from '../../components/common/Register/ComponentRegister'
 
 const ScreenRegister = () => {
-	return (
-		<View>
-			<ComponentRegister />
-		</View>
-	)
+	return <ComponentRegister />
 }
 export default ScreenRegister

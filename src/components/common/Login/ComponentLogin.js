@@ -10,6 +10,7 @@ const ComponentLogin = () => {
 	})
 	return (
 		<View style={styles.container}>
+			<Text style={styles.title}>Go Shopping</Text>
 			<View style={styles.inputView}>
 				<TextInput
 					style={styles.TextInput}
@@ -20,7 +21,7 @@ const ComponentLogin = () => {
 					}}
 				/>
 			</View>
-			<View>
+			<View style={styles.inputView}>
 				<TextInput
 					style={styles.TextInput}
 					placeholder='Enter your password'
@@ -33,11 +34,11 @@ const ComponentLogin = () => {
 			</View>
 
 			<TouchableOpacity>
-				<Text style={styles.forgot_button}>Forgot your passoword?</Text>
+				<Text style={styles.forgot_button}>Forgot your password?</Text>
 			</TouchableOpacity>
 
 			<TouchableOpacity style={styles.loginBtn}>
-				<Text style={styles.loginText}>Login</Text>
+				<Text>Login</Text>
 			</TouchableOpacity>
 		</View>
 	)

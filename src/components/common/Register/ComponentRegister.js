@@ -1,46 +1,57 @@
-import React from 'react'
-import {
-  TextInput,
-  View,
-  Text,
-  KeyboardAvoidingView,
-  Keyboard,
-  TouchableWithoutFeedback,
-  Button, Alert
-} from 'react-native'
+import React, { useState } from 'react'
+import { TextInput, View, Text } from 'react-native'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 import { styles } from './ComponentRegister.style'
 
 const ComponentRegister = () => {
+	const [account, setAccount] = useState({
+		name: '',
+		email: '',
+		password: ''
+	})
 	return (
-		<KeyboardAvoidingView style={styles.containerView} behavior='padding'>
-			<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-				<View style={styles.registerScreenContainer}>
-					<View style={styles.registerFormView}>
-						<Text style={styles.logoText}>Long Shopping</Text>
-						<TextInput
-							placeholder='name'
-							placeholderColor='#c4c3cb'
-							style={styles.registerFormTextInput}
-						/>
-						<TextInput
-							placeholder='email'
-							placeholderColor='#c4c3cb'
-							style={styles.registerFormTextInput}
-						/>
-						<TextInput
-							placeholder='Password'
-							placeholderColor='#c4c3cb'
-							style={styles.registerFormTextInput}
-							secureTextEntry
-						/>
-            <Button
-              title="Register"
-              onPress={() => Alert.alert('Right button pressed')}
-            />
-					</View>
-				</View>
-			</TouchableWithoutFeedback>
-		</KeyboardAvoidingView>
+		<View style={styles.container}>
+			<Text style={styles.title}>Go Shopping</Text>
+			<View style={styles.inputView}>
+				<TextInput
+					style={styles.TextInput}
+					placeholder='Enter your name'
+					placeholderTextColor='#003f5c'
+					onChangeText={name => {
+						setAccount({ ...account, name })
+					}}
+				/>
+			</View>
+			<View style={styles.inputView}>
+				<TextInput
+					style={styles.TextInput}
+					placeholder='Enter your email'
+					placeholderTextColor='#003f5c'
+					onChangeText={email => {
+						setAccount({ ...account, email })
+					}}
+				/>
+			</View>
+			<View style={styles.inputView}>
+				<TextInput
+					style={styles.TextInput}
+					placeholder='Enter your password'
+					placeholderTextColor='#003f5c'
+					onChangeText={password => {
+						setAccount({ ...account, password })
+					}}
+					secureTextEntry
+				/>
+			</View>
+
+			<TouchableOpacity>
+				<Text style={styles.forgot_button}>Account already exists? Login</Text>
+			</TouchableOpacity>
+
+			<TouchableOpacity style={styles.registerBtn}>
+				<Text>Register</Text>
+			</TouchableOpacity>
+		</View>
 	)
 }
 

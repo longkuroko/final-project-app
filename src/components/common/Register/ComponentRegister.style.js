@@ -1,45 +1,55 @@
 import { StyleSheet } from 'react-native'
 
 export const styles = StyleSheet.create({
-	containerView: {
+	container: {
 		flex: 1,
-		alignItems: 'center'
+		backgroundColor: '#fff',
+		alignItems: 'center',
+		justifyContent: 'center'
 	},
-	registerScreenContainer: {
-		flex: 1
+
+	image: {
+		marginBottom: 40
 	},
-	logoText: {
-		fontSize: 40,
-		fontWeight: '800',
-		marginTop: 150,
-		marginBottom: 30,
-		textAlign: 'center'
+	title: {
+		fontSize: 30,
+		fontWeight: '400',
+		fontFamily: 'Comfortaa-Bold',
+		lineHeight: 40,
+		alignItems: 'center',
+		letterSpacing: -0.01,
+		marginBottom: 20,
+		color: '#2980B9'
 	},
-	registerFormView: {
-		flex: 1
-	},
-	registerFormTextInput: {
-		height: 43,
-		fontSize: 14,
-		borderRadius: 5,
+	inputView: {
+		backgroundColor: '#fff',
 		borderWidth: 1,
-		borderColor: '#eaeaea',
-		backgroundColor: '#fafafa',
-		paddingLeft: 10,
-		marginTop: 5,
-		marginBottom: 5
-	},
-	registerButton: {
-		backgroundColor: '#3897f1',
-		borderRadius: 5,
+		borderRadius: 10,
+		width: '70%',
 		height: 45,
-		marginTop: 10,
-		width: 350,
-		alignItems: 'center'
+		marginBottom: 20,
+		alignItems: 'flex-start'
 	},
-	fbLoginButton: {
-		height: 45,
-		marginTop: 10,
-		backgroundColor: 'transparent'
+
+	TextInput: {
+		height: 50,
+		flex: 1,
+		padding: 10,
+		marginLeft: 20
+	},
+
+	forgot_button: {
+		height: 30,
+		marginBottom: 30
+	},
+
+	registerBtn: {
+		width: 200,
+		borderRadius: 10,
+		height: 50,
+		alignItems: 'center',
+		justifyContent: 'center',
+		marginTop: 40,
+		backgroundColor: '#4D96FF'
 	}
 })
