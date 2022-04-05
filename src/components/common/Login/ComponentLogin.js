@@ -1,23 +1,53 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { TextInput, View, Text } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import { useFonts } from 'expo-font'
+import axios from 'axios'
 import { styles } from './ComponentLogin.style'
+import { API_HOST } from '../../../util/API'
+import { USER_ACTION, UserContext } from '../../../context/UserContext'
 
 const ComponentLogin = () => {
 	const [account, setAccount] = useState({
-		email: '',
+		username: '',
 		password: ''
 	})
+
+	const userCTX = useContext(UserContext)
+
+	const handleLogic = () => {
+		axios
+			.post(`${API_HOST}/api/v1/auth/login`, { ...account })
+			.then(respones => {
+				if (respones.data !== undefined) {
+					userCTX.login(USER_ACTION.LOGIN, respones.data.token)
+				}
+			})
+			.catch(reason => {
+				console.log(reason)
+			})
+	}
+
+	const [loaded] = useFonts({
+		// eslint-disable-next-line global-require
+		Comfortaa: require('../../../../assets/fonts/Comfortaa-Bold.ttf')
+	})
+
+	if (!loaded) {
+		return null
+	}
 	return (
 		<View style={styles.container}>
-			<Text style={styles.title}>Go Shopping</Text>
+			<Text style={{ ...styles.title, fontFamily: 'Comfortaa' }}>
+				Go Shopping
+			</Text>
 			<View style={styles.inputView}>
 				<TextInput
 					style={styles.TextInput}
-					placeholder='Enter your email'
+					placeholder='Enter your username'
 					placeholderTextColor='#003f5c'
-					onChangeText={email => {
-						setAccount({ ...account, email })
+					onChangeText={username => {
+						setAccount({ ...account, username })
 					}}
 				/>
 			</View>
@@ -37,7 +67,7 @@ const ComponentLogin = () => {
 				<Text style={styles.forgot_button}>Forgot your password?</Text>
 			</TouchableOpacity>
 
-			<TouchableOpacity style={styles.loginBtn}>
+			<TouchableOpacity style={styles.loginBtn} onPress={handleLogic}>
 				<Text>Login</Text>
 			</TouchableOpacity>
 		</View>

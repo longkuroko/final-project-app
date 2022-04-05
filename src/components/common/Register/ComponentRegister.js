@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { TextInput, View, Text } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import { useFonts } from 'expo-font'
 import { styles } from './ComponentRegister.style'
 
 const ComponentRegister = () => {
@@ -9,9 +10,20 @@ const ComponentRegister = () => {
 		email: '',
 		password: ''
 	})
+	const [loaded] = useFonts({
+		// eslint-disable-next-line global-require
+		Comfortaa: require('../../../../assets/fonts/Comfortaa-Bold.ttf')
+	})
+
+	if (!loaded) {
+		return null
+	}
+
 	return (
 		<View style={styles.container}>
-			<Text style={styles.title}>Go Shopping</Text>
+			<Text style={{ ...styles.title, fontFamily: 'Comfortaa' }}>
+				Go Shopping
+			</Text>
 			<View style={styles.inputView}>
 				<TextInput
 					style={styles.TextInput}

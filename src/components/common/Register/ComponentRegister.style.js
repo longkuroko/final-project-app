@@ -14,7 +14,6 @@ export const styles = StyleSheet.create({
 	title: {
 		fontSize: 30,
 		fontWeight: '400',
-		fontFamily: 'Comfortaa-Bold',
 		lineHeight: 40,
 		alignItems: 'center',
 		letterSpacing: -0.01,
