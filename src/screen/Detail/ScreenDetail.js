@@ -1,17 +1,17 @@
-import React, {useContext} from 'react'
+import React, { useContext } from 'react'
 import { View, SafeAreaView, Image, Text } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { styles } from './ScreenDetail.style'
-import {UserContext} from "../../context/UserContext";
+import { UserContext } from '../../context/UserContext'
 
 const ScreenDetail = ({ navigation, route }) => {
 	const plant = route.params
 
-  const userCTX = useContext(UserContext);
+	const userCTX = useContext(UserContext)
 
-  console.log(userCTX.state.token)
+	console.log(userCTX.state.token)
 
-  return (
+	return (
 		<SafeAreaView
 			style={{
 				flex: 1,

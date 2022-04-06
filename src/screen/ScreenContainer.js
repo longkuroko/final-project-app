@@ -5,6 +5,7 @@ import ScreenHome from './Home/ScreenHome'
 import ScreenLogin from './Login/ScreenLogin'
 import ScreenRegister from './Login/ScreenRegister'
 import ScreenDetail from './Detail/ScreenDetail'
+import ScreenProfile from './Profile/ScreenProfile'
 
 const Drawer = createDrawerNavigator()
 
@@ -38,6 +39,7 @@ const MainScreen = () => {
 				}}
 			/>
 			<Drawer.Screen name='ScreenRegister' component={ScreenRegister} />
+			<Drawer.Screen name='Profile' component={ScreenProfile} />
 			<Drawer.Screen name='Details' component={ScreenDetail} />
 		</Drawer.Navigator>
 	)

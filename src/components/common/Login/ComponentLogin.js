@@ -7,7 +7,7 @@ import { styles } from './ComponentLogin.style'
 import { API_HOST } from '../../../util/API'
 import { USER_ACTION, UserContext } from '../../../context/UserContext'
 
-const ComponentLogin = () => {
+const ComponentLogin = ({navigation}) => {
 	const [account, setAccount] = useState({
 		username: '',
 		password: ''
