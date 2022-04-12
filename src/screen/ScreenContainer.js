@@ -4,7 +4,6 @@ import { View, Image } from 'react-native'
 import ScreenHome from './Home/ScreenHome'
 import ScreenLogin from './Login/ScreenLogin'
 import ScreenRegister from './Login/ScreenRegister'
-import ScreenDetail from './Detail/ScreenDetail'
 import ScreenProfile from './Profile/ScreenProfile'
 
 const Drawer = createDrawerNavigator()
@@ -26,10 +25,10 @@ const MainScreen = () => {
 				}}
 			/>
 			<Drawer.Screen
-				name='ScreenLogin'
-				component={ScreenLogin}
+				name='Profile'
+				component={ScreenProfile}
 				options={{
-					title: 'account',
+					title: 'Profile',
 					drawerIcon: () => (
 						<Image
 							style={{ width: 20, height: 20 }}
@@ -38,9 +37,20 @@ const MainScreen = () => {
 					)
 				}}
 			/>
-			<Drawer.Screen name='ScreenRegister' component={ScreenRegister} />
-			<Drawer.Screen name='Profile' component={ScreenProfile} />
-			<Drawer.Screen name='Details' component={ScreenDetail} />
+			<Drawer.Screen
+				name='ScreenLogin'
+				component={ScreenLogin}
+				options={{
+					title: 'Log In',
+					drawerIcon: () => (
+						<Image
+							style={{ width: 20, height: 20 }}
+							source={require('../../assets/account.png')}
+						/>
+					)
+				}}
+			/>
+			<Drawer.Screen name='Register' component={ScreenRegister} />
 		</Drawer.Navigator>
 	)
 }

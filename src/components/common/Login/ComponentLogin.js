@@ -7,7 +7,7 @@ import { styles } from './ComponentLogin.style'
 import { API_HOST } from '../../../util/API'
 import { USER_ACTION, UserContext } from '../../../context/UserContext'
 
-const ComponentLogin = ({navigation}) => {
+const ComponentLogin = ({ navigation }) => {
 	const [account, setAccount] = useState({
 		username: '',
 		password: ''
@@ -15,12 +15,18 @@ const ComponentLogin = ({navigation}) => {
 
 	const userCTX = useContext(UserContext)
 
+	const [fail, setFail] = useState(null)
+
 	const handleLogic = () => {
 		axios
 			.post(`${API_HOST}/api/v1/auth/login`, { ...account })
-			.then(respones => {
-				if (respones.data !== undefined) {
-					userCTX.login(USER_ACTION.LOGIN, respones.data.token)
+			.then(response => {
+				if (response.data !== undefined) {
+					setFail(false)
+					console.log(response.data.token)
+					userCTX.login(USER_ACTION.LOGIN, response.data.token)
+				} else {
+					setFail(true)
 				}
 			})
 			.catch(reason => {
@@ -65,6 +71,9 @@ const ComponentLogin = ({navigation}) => {
 
 			<TouchableOpacity>
 				<Text style={styles.forgot_button}>Forgot your password?</Text>
+			</TouchableOpacity>
+			<TouchableOpacity onPress={() => navigation.navigate('ScreenRegister')}>
+				<Text style={styles.forgot_button}>Sign up</Text>
 			</TouchableOpacity>
 
 			<TouchableOpacity style={styles.loginBtn} onPress={handleLogic}>
