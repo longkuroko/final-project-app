@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import { TextInput, View, Text } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useFonts } from 'expo-font'
@@ -6,272 +6,197 @@ import axios from 'axios'
 import { styles } from './ComponentRegister.style'
 import { API_HOST } from '../../../util/API'
 import { USER_ACTION, UserContext } from '../../../context/UserContext'
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const ComponentRegister = ({ navigation }) => {
-	const textState = {
-		empty: 'empty',
-		invalid: 'invalid',
-		valid: 'valid'
-	}
 
 	const [account, setAccount] = useState({
 		username: '',
 		email: '',
 		password: '',
 		fullName: '',
-		phoneNumber: '',
-		verifiedPassword: ''
+		phoneNumber: ''
 	})
 	const userCTX = useContext(UserContext)
 
-	const [phoneError, setPhoneError] = useState(textState.empty)
-	const [nameUsernameError, setUsernameError] = useState(textState.empty)
-	const [emailError, setEmailError] = useState(textState.empty)
-	const [error, setError] = useState(false)
-	const [success, setSuccess] = useState(false)
-	const [samePassword, setSamePassword] = useState(false)
+  const [showPassword, setShowPassword] = useState(true);
+  const [validateFullName, setValidateFullName] = useState(false);
+  const [validatePassword, setValidatePassword] = useState(false);
+  const [validateEmail, setValidateEmail] = useState(false);
+  const [validateUserName, setValidateUserName] = useState(false);
+  const [Notifice, setNotifice] = useState({
+    type: false,
+    message: "",
+    isShow: false
+  })
+
+  useEffect(() => {
+    const isShow =  setTimeout(() => {
+      setNotifice({type: false, message: "" , isShow: false})
+    }, 1500)
+    return () => {
+      clearTimeout(isShow)
+    }
+  }, [Notifice])
+
+  const valiEmail = (email) => {
+    const check = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return check.test(String(email).toLowerCase());
+  }
+  const isValidFullName = (val) => {
+    if (val.trim().length <= 0) {
+      setValidateFullName(true);
+    } else {
+      setValidateFullName(false);
+    }
+  }
+  const isValidUserName = (val) => {
+    if (val.trim().length <= 3) {
+      setValidateUserName(true);
+    } else {
+      setValidateUserName(false);
+    }
+  }
+  const isValidPassword = (val) => {
+    var format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+    console.log(val);
+    if (val.trim().length <= 5) {
+      setValidatePassword(true);
+    }
+    else {
+      if (format.test(val)) {
+        setValidatePassword(true);
+      } else {
+        setValidatePassword(false);
+      }
+    }
+  }
+  const isValidEmail = (val) => {
+    if (!valiEmail(val)) {
+      setValidateEmail(true);
+    } else {
+      setValidateEmail(false);
+    }
+  }
 
 	const [loaded] = useFonts({
 		// eslint-disable-next-line global-require
 		Comfortaa: require('../../../../assets/fonts/Comfortaa-Bold.ttf')
 	})
 
+
 	if (!loaded) {
 		return null
 	}
+
+  const handleRegister = (account) => {
+    if (account.username === ''
+      || account.password === ''
+      || account.fullName === ''
+      || account.phoneNumber === ''
+      || account.email === '') {
+      setNotifice({
+        type: false,
+        message: "Vui lòng nhập đầy đủ các trường...",
+      isShow: true})
+    } else if (account) {
+      if (validateEmail || validatePassword || validateFullName || validateUserName) {
+        setNotifice({
+          type: false,
+          message: "Vui lòng nhập thông tin đúng yêu cầu...",
+          isShow: true})
+        return
+      }
+      axios.post(`${API_HOST}/api/v1/auth/login`, account)
+        .then(res => {
+          if (res.data) {
+            setNotifice({ type: true, message: "Đăng ký thành công", isShow: true })
+          }
+        })
+        .catch(err => {
+          if (err.response) {
+            if (err.response.status === 409) {
+              setNotifice({ type: false, message: "Tài khoản đã tồn tại", isShow: true })
+            } else if (err.response.status === 204) {
+              setNotifice({ type: false, message: "Lỗi nhập, vui lòng kiểm tra lại", isShow: true })
+            } else {
+              setNotifice({ type: false, message: "Hệ thống đang bảo trì", isShow: true })
+            }
+          }
+        })
+    }
+  }
 	return (
 		<View style={styles.container}>
 			<Text style={{ ...styles.title, fontFamily: 'Comfortaa' }}>
 				Go Shopping
 			</Text>
-			<View style={styles.inputView}>
-				<TextInput
-					style={styles.TextInput}
-					placeholder='Enter your name'
-					placeholderTextColor='#003f5c'
-					onChangeText={username => {
-						const regex = /^[^\s]+( [^\s]+)+$/
-						if (username.match(regex)) {
-							setAccount({ ...account, username })
-							setUsernameError(textState.valid)
-						} else {
-							setUsernameError(textState.invalid)
-						}
+      <View style={styles.inputView}>
+        <TextInput
+          style={styles.TextInput}
+          placeholder='Enter your full name'
+          onChangeText ={fullName => setAccount({...account, fullName })}
+          autoCorrect={false}
+          autoCompleteType='off'
+          onEndEditing={(e) => isValidFullName(e.nativeEvent.text)}
+        />
+        {validateFullName ? <Text style={styles.Validation}>Họ và tên không được để trống</Text> : null}
+      </View>
+      <View style={styles.inputView}>
+        <TextInput
+          style={styles.TextInput}
+          placeholder='Enter your username'
+          onChangeText ={username => setAccount({...account, username })}
+          autoCorrect={false}
+          autoCompleteType='off'
+          onEndEditing={(e) => isValidUserName(e.nativeEvent.text)}
+        />
+        {validateUserName ?
+          <Text style={styles.Validation}>Tài khoản phải dài hơn hoặc bằng 4 kí tự và không chứa kí tự đặc biệt</Text>
+          : null}
+      </View>
+      <View style={styles.inputView}>
+        <TextInput
+          style={styles.TextInput}
+          placeholder='Enter your email'
+          onChangeText ={email => setAccount({...account, email })}
+          autoCorrect={false}
+          autoCompleteType='off'
+          onEndEditing={(e) => isValidEmail(e.nativeEvent.text)}
+        />
+        {validateEmail ?
+          <Text style={styles.Validation}>Vui lòng nhập theo cấu trúc : abc@gmail.com</Text>
+          : null}
+      </View>
+      <View style={styles.inputView}>
+        <TextInput
+          style={styles.TextInput}
+          placeholder='Enter your password'
+          onChangeText ={password => setAccount({...account, password })}
+          autoCorrect={false}
+          autoCompleteType='off'
+          autoCapitalize="none"
+          onEndEditing={(e) => isValidPassword(e.nativeEvent.text)}
+        />
+        <TouchableOpacity
+          style={styles.eyePassword}
+          onPress={() => setShowPassword(!showPassword)}>
+          {
+            // Security on === true
+            showPassword
+              ? <Icon name="eye-outline" size={15} />
+              : <Icon name="eye-off-outline" size={15} />
+          }
+        </TouchableOpacity>
+        {validatePassword ?
+          <Text style={styles.Validation}>Mật khẩu phải dài hơn hoặc bằng 6 kí tự và không chứa kí tự đặc biệt</Text>
+          : null}
+      </View>
 
-						if (username.length === 0) {
-							setUsernameError(textState.empty)
-						}
-
-						if (
-							account.password === account.verifiedPassword &&
-							account.password.length > 0 &&
-							account.verifiedPassword.length > 0
-						) {
-							setSamePassword(true)
-						} else {
-							setSamePassword(false)
-						}
-					}}
-				/>
-
-				<View>
-					{nameUsernameError === textState.invalid ? (
-						<Text>username is invalid</Text>
-					) : null}
-				</View>
-			</View>
-			<View style={styles.inputView}>
-				<TextInput
-					style={styles.TextInput}
-					placeholder='Enter your password'
-					placeholderTextColor='#003f5c'
-					onChangeText={password => {
-						setAccount({ ...account, password })
-
-						if (
-							password === account.verifiedPassword &&
-							password.length > 0 &&
-							account.verifiedPassword.length > 0
-						) {
-							setSamePassword(false)
-						} else {
-							setSamePassword(true)
-						}
-					}}
-					secureTextEntry
-				/>
-			</View>
-			<View style={styles.inputView}>
-				<TextInput
-					style={styles.TextInput}
-					placeholder='Enter your password again'
-					placeholderTextColor='#003f5c'
-					onChangeText={verifiedPassword => {
-						setAccount({ ...account, verifiedPassword })
-						if (
-							account.password === verifiedPassword &&
-							account.verifiedPassword.length > 0 &&
-							verifiedPassword > 0
-						) {
-							setSamePassword(false)
-						} else {
-							setSamePassword(true)
-						}
-					}}
-					secureTextEntry
-				/>
-			</View>
-			<View style={styles.inputView}>
-				<TextInput
-					style={styles.TextInput}
-					placeholder='Enter your email'
-					placeholderTextColor='#003f5c'
-					onChangeText={email => {
-						const regex = /^[^\s@]+@[^\s@]+$/
-						if (email.match(regex)) {
-							setAccount({ ...account, email })
-							setEmailError(textState.valid)
-						} else {
-							setEmailError(textState.invalid)
-						}
-
-						if (email.length === 0) {
-							setEmailError(textState.empty)
-						}
-
-						if (
-							account.password === account.verifiedPassword &&
-							account.password.length > 0 &&
-							account.verifiedPassword.length > 0
-						) {
-							setSamePassword(false)
-						} else {
-							setSamePassword(true)
-						}
-					}}
-				/>
-				<View>
-					{emailError === textState.invalid ? (
-						<Text>Email must be Empty</Text>
-					) : null}
-				</View>
-			</View>
-			<View style={styles.inputView}>
-				<TextInput
-					style={styles.TextInput}
-					placeholder='Enter your full name'
-					placeholderTextColor='#003f5c'
-					onChangeText={fullName => {
-						setAccount({ ...account, fullName })
-					}}
-				/>
-			</View>
-			<View style={styles.inputView}>
-				<TextInput
-					style={styles.TextInput}
-					placeholder='Enter your phone number'
-					placeholderTextColor='#003f5c'
-					onChangeText={phoneNumber => {
-						const regex = /^[0-9]{10}$/
-						if (phoneNumber.match(regex)) {
-							setAccount({ ...account, phoneNumber })
-							setPhoneError(textState.valid)
-						} else if (!phoneNumber.match(regex)) {
-							setPhoneError(textState.invalid)
-						}
-
-						if (phoneNumber.length === 0) {
-							setPhoneError(textState.empty)
-						}
-
-						if (
-							account.password === account.verifiedPassword &&
-							account.password.length > 0 &&
-							account.verifiedPassword.length > 0
-						) {
-							setSamePassword(false)
-						} else {
-							setSamePassword(true)
-						}
-					}}
-				/>
-				<View>
-					{phoneError === textState.invalid ? (
-						<Text>Phone number must be enough 10 digits</Text>
-					) : null}
-				</View>
-			</View>
-
-			<View>
-				{samePassword && <Text>Password do not match</Text>}
-				{error && <Text>Something wrong, try again !</Text>}
-				{success && <Text>Sign up successfully !</Text>}
-			</View>
-
-			<TouchableOpacity onPress={() => navigation.navigate('ScreenLogin')}>
-				<Text style={styles.forgot_button}>Account already exists? Login</Text>
-			</TouchableOpacity>
-
-			<TouchableOpacity style={styles.registerBtn}>
-				onPress =
-				{() => {
-					const information = {
-						phone: account.phoneNumber,
-						username: account.username,
-						password: account.password,
-						email: account.email
-					}
-
-					// Call api
-					axios
-						.post(`${API_HOST}/api/v1/auth/register`, { ...information })
-						.then(response => {
-							if (response.data.status === 201) {
-								console.log(response)
-								setError(false)
-								setSuccess(true)
-
-								const payload = {
-									username: account.username,
-									password: account.password
-								}
-								axios
-									.post(`${API_HOST}/api/v1/auth/login`, payload)
-									.then(data => {
-										if (data.data.status === 201) {
-											const navigate = () => {
-												navigation.navigate('ScreenLogin')
-											}
-
-											const next = {
-												username: payload.phone,
-												token: data.data.token
-											}
-											userCTX.loginAfterSignup(
-												USER_ACTION.REGISTER,
-												next,
-												navigate
-											)
-										} else if (data.data.status === 404) {
-											setError(true)
-										}
-									})
-									.catch(reason => {
-										setError(true)
-										console.log(reason)
-									})
-							} else if (response.data.status === 404) {
-								setError(true)
-							}
-						})
-						.catch(reason => {
-							setError(true)
-							console.log(reason)
-						})
-				}}
-				<Text>Register</Text>
-			</TouchableOpacity>
-		</View>
+      <TouchableOpacity style={styles.registerBtn}>
+        <Text>Register</Text>
+      </TouchableOpacity>
+    </View>
 	)
 }
 

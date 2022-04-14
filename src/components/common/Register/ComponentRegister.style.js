@@ -50,5 +50,12 @@ export const styles = StyleSheet.create({
 		justifyContent: 'center',
 		marginTop: 40,
 		backgroundColor: '#4D96FF'
-	}
+	},
+  eyePassword: {
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
+    paddingHorizontal: 10,
+    paddingVertical: 12
+  }
 })
