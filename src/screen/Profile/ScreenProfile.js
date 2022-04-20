@@ -2,49 +2,55 @@ import React, { useContext, useEffect, useState } from 'react'
 import { SafeAreaView, ScrollView, View, Image, Text } from 'react-native'
 import { Avatar, Caption, Title, TouchableRipple } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-import { useIsFocused } from '@react-navigation/native'
-import axios from 'axios'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { styles } from './ScreenProfile.style'
 import { USER_ACTION, UserContext } from '../../context/UserContext'
-import { API_HOST } from '../../util/API'
+import { getProfile } from '../../API/Profile/ProfileAPI'
+import axios from "axios";
+import {API_HOST} from "../../util/API";
 
 const ScreenProfile = ({ navigation }) => {
-	const userCTX = useContext(UserContext)
-	const isFocused = useIsFocused()
+  const userCTX = useContext(UserContext)
 
-	const [profile, setProfile] = useState({
-		username: null,
-		email: null,
-		avatar: null,
-		phone: null,
-		fullName: null
-	})
+  const [profile, setProfile] = useState({
+    username: null,
+    email: null,
+    avatar: null,
+    phone: null,
+    fullName: null
+  })
 
-	// TODO : CALL API GET PROFILE
+  const getToken = async () => {
+    try {
+      return await AsyncStorage.getItem('token')
+    }catch (e) {
+
+    }
+  }
+
 	useEffect(() => {
-		if (isFocused) {
-			console.log(isFocused)
-			axios
-				.get(`${API_HOST}/api/v1/auth/profile`, {
-					headers: {
-						Authorization: `Bearer ${userCTX.state.token}`
-					}
-				})
-				.then(value => {
-					if (value.data.status === 200) {
-						setProfile({
-							username: value.data.username,
-							email: value.data.email,
-							phone: value.data.phoneNumber,
-							fullName: value.data.fullname
-						})
-					}
-				})
-				.catch(reason => {
-					console.log(reason)
-				})
-		}
-	}, [isFocused])
+    const token = getToken()
+    console.log(token)
+    axios.get(`${API_HOST}/api/v1/auth/profile`, {
+      headers: {
+        'x-private-key': 'MasdhaMASHF@adfn%sad',
+        'x-application-name': 'AFF-APP',
+        'Authorization': `Bearer ${token}`
+      }
+    }).then(res => {
+      if (res && res.data) {
+        setProfile({
+          username: res.data.username,
+          email: res.data.email,
+          phone: res.data.phoneNumber,
+          fullName: res.data.fullName
+        })
+      }
+    }).catch(err => {
+      console.log(err)
+    })
+	}, [])
+
 	return (
 		<SafeAreaView style={styles.container}>
 			<View style={styles.userInfoSection}>

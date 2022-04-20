@@ -1,20 +1,46 @@
-import React, { useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import { useFonts } from 'expo-font'
-import { FlatList, SafeAreaView, Text, TextInput, View } from 'react-native'
+import { FlatList, SafeAreaView, Text, TextInput, View , TouchableOpacity} from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import axios from "axios";
 import { styles } from './ScreenHome.style'
-import plants from '../../context/product'
-import Card from './Card'
+import CategoryList from '../../components/Home/CategoryList'
+import Card from '../../components/Home/Card'
+import {API_HOST} from "../../util/API";
 
 const Home = ({ navigation }) => {
+
+  const [products, setProducts] = useState([])
+  useEffect(() => {
+    axios
+      .get(`${API_HOST}/api/v1/mobile/product`, {
+        headers: {
+          'x-private-key': 'MasdhaMASHF@adfn%sad',
+          'x-application-name': 'AFF-APP'
+        }
+      })
+      .then(res => {
+        if (res && res.data.data) {
+          // eslint-disable-next-line no-param-reassign
+          console.log(res.data.data)
+          setProducts(res.data.data)
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }, [])
+
+
 	const [loaded] = useFonts({
 		// eslint-disable-next-line global-require
 		Montserrat: require('../../../assets/fonts/Comfortaa-Bold.ttf')
 	})
 
-	if (!loaded) {
+	if (!loaded || products.length === 0) {
 		return null
 	}
+
 	return (
 		<SafeAreaView style={styles.container}>
 			<View style={styles.header}>
@@ -34,19 +60,34 @@ const Home = ({ navigation }) => {
 					<TextInput placeholder='search...' style={styles.input} />
 				</View>
 			</View>
-			<FlatList
-				columnWrapperStyle={{ justifyContent: 'space-between' }}
-				showsVerticalScrollIndicator={false}
-				contentContainerStyle={{
-					marginTop: 10,
-					paddingBottom: 50
-				}}
-				numColumns={2}
-				data={plants}
-				renderItem={({ item }) => {
-					return <Card plant={item} navigation={navigation} />
-				}}
-			/>
+			<View
+				style={{
+					flexDirection: 'row',
+					marginTop: 30,
+					marginBottom: 20,
+					justifyContent: 'space-between'
+				}}>
+        <FlatList
+        	columnWrapperStyle={{ justifyContent: 'space-between' }}
+        	contentContainerStyle={{
+        		marginTop: 10,
+        		paddingBottom: 50
+        	}}
+        	numColumns={2}
+        	data={products}
+          keyExtractor={(_, index) => index.toString()}
+        	renderItem={({ item }) => {
+            return <Card product={item} navigation={navigation}/>
+        	}}
+        />
+			</View>
+      <View style={{ marginTop: 30, flexDirection: 'row' }}>
+        <View style={styles.searchContainer}>
+          <TouchableOpacity>
+            <Text>View more</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
 		</SafeAreaView>
 	)
 }

@@ -51,11 +51,11 @@ export const styles = StyleSheet.create({
 		marginTop: 40,
 		backgroundColor: '#4D96FF'
 	},
-  eyePassword: {
-    position: 'absolute',
-    right: 0,
-    bottom: 0,
-    paddingHorizontal: 10,
-    paddingVertical: 12
-  }
+	eyePassword: {
+		position: 'absolute',
+		right: 0,
+		bottom: 0,
+		paddingHorizontal: 10,
+		paddingVertical: 12
+	}
 })
