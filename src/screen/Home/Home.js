@@ -15,9 +15,15 @@ const Home = ({ navigation }) => {
 
   const [products, setProducts] = useState([])
   const [textSearch, setTextSearch] = useState('');
-  useEffect(() => {
-    axios
-      .get(`${API_HOST}/api/v1/mobile/product`, {
+
+  const searchEvent = (searchTxt) => {
+    getListProduct(searchTxt)
+  }
+
+  // eslint-disable-next-line no-shadow
+  const getListProduct = async (textSearch) => {
+    await axios
+      .get(`${API_HOST}/api/v1/mobile/product?search=${textSearch}`, {
         headers: {
           'x-private-key': 'MasdhaMASHF@adfn%sad',
           'x-application-name': 'AFF-APP'
@@ -33,6 +39,26 @@ const Home = ({ navigation }) => {
       .catch(err => {
         console.log(err)
       })
+  }
+  useEffect(() => {
+    getListProduct(textSearch)
+    // axios
+    //   .get(`${API_HOST}/api/v1/mobile/product`, {
+    //     headers: {
+    //       'x-private-key': 'MasdhaMASHF@adfn%sad',
+    //       'x-application-name': 'AFF-APP'
+    //     }
+    //   })
+    //   .then(res => {
+    //     if (res && res.data.data) {
+    //       // eslint-disable-next-line no-param-reassign
+    //       console.log(res.data.data)
+    //       setProducts(res.data.data)
+    //     }
+    //   })
+    //   .catch(err => {
+    //     console.log(err)
+    //   })
   }, [])
 
 
@@ -60,8 +86,16 @@ const Home = ({ navigation }) => {
 
 			<View style={{ marginTop: 30, flexDirection: 'row' }}>
 				<View style={styles.searchContainer}>
-					<Icon name='search' size={25} style={styles.iconSearch} />
-					<TextInput placeholder='search...' style={styles.input} />
+          <TouchableOpacity
+          onPress={() => searchEvent(textSearch)}>
+            <Icon name='search' size={25} style={styles.iconSearch} />
+          </TouchableOpacity>
+					<TextInput
+            placeholder='search...'
+            onChangeText={txtSearch => {
+              setTextSearch(txtSearch)
+            }}
+            style={styles.input} />
 				</View>
 			</View>
         <FlatList
@@ -77,13 +111,10 @@ const Home = ({ navigation }) => {
             return <Card product={item} navigation={navigation}/>
         	}}
         />
-      <View style={{ marginTop: 30, flexDirection: 'row' }}>
-        <View style={styles.searchContainer}>
-          <TouchableOpacity>
-            <Text>View more</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+      <TouchableOpacity
+        style={styles.viewMoreBtn}>
+        <Text >View more</Text>
+      </TouchableOpacity>
 		</SafeAreaView>
 	)
 }

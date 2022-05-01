@@ -122,5 +122,15 @@ export const styles = StyleSheet.create({
 	activeCategoryListText: {
 		borderBottomWidth: 1,
 		paddingBottom: 5
-	}
+	},
+  viewMoreBtn: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 10,
+    height: 50,
+    backgroundColor: '#fff',
+    marginBottom: 5,
+    fontStyle: 'normal',
+    borderWidth: 3
+  }
 })
