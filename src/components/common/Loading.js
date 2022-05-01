@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
-import { Animated, View, Image } from 'react-native'
+import { Animated, View, Image, StyleSheet } from 'react-native'
 
-const Loading = ({ navigation }) => {
+export const Loading = ({ navigation }) => {
 	const fadeAnim = useRef(new Animated.Value(0)).current
 	useEffect(() => {
 		Animated.timing(fadeAnim, {
@@ -25,7 +25,6 @@ const Loading = ({ navigation }) => {
 					]}>
 					<Image
 						style={styles.logo}
-						source={LogoIcon}
 						onPress={() => navigation.navigate('Home')}
 					/>
 				</Animated.View>
@@ -33,3 +32,10 @@ const Loading = ({ navigation }) => {
 		</View>
 	)
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    width: '100%'
+  }
+})

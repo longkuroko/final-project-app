@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import { useFonts } from 'expo-font'
-import { FlatList, SafeAreaView, Text, TextInput, View , TouchableOpacity} from 'react-native'
+import {FlatList, SafeAreaView, Text, TextInput, View, TouchableOpacity, Dimensions} from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import axios from "axios";
 import { styles } from './ScreenHome.style'
@@ -8,9 +8,13 @@ import CategoryList from '../../components/Home/CategoryList'
 import Card from '../../components/Home/Card'
 import {API_HOST} from "../../util/API";
 
+const { width, height } = Dimensions.get('screen')
+
+
 const Home = ({ navigation }) => {
 
   const [products, setProducts] = useState([])
+  const [textSearch, setTextSearch] = useState('');
   useEffect(() => {
     axios
       .get(`${API_HOST}/api/v1/mobile/product`, {
@@ -60,18 +64,11 @@ const Home = ({ navigation }) => {
 					<TextInput placeholder='search...' style={styles.input} />
 				</View>
 			</View>
-			<View
-				style={{
-					flexDirection: 'row',
-					marginTop: 30,
-					marginBottom: 20,
-					justifyContent: 'space-between'
-				}}>
         <FlatList
         	columnWrapperStyle={{ justifyContent: 'space-between' }}
         	contentContainerStyle={{
         		marginTop: 10,
-        		paddingBottom: 50
+        		paddingBottom: 50,
         	}}
         	numColumns={2}
         	data={products}
@@ -80,7 +77,6 @@ const Home = ({ navigation }) => {
             return <Card product={item} navigation={navigation}/>
         	}}
         />
-			</View>
       <View style={{ marginTop: 30, flexDirection: 'row' }}>
         <View style={styles.searchContainer}>
           <TouchableOpacity>

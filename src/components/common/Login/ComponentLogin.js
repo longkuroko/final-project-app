@@ -1,11 +1,13 @@
-import React, { useContext, useState } from 'react'
-import { TextInput, View, Text } from 'react-native'
+import React, { useContext, useEffect, useState } from 'react'
+import { TextInput, View, Text, Keyboard } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useFonts } from 'expo-font'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import axios from 'axios'
 import { styles } from './ComponentLogin.style'
 import { USER_ACTION, UserContext } from '../../../context/UserContext'
 import LoginAPI from '../../../API/Auth/LoginAPI'
+import { API_HOST } from '../../../util/API'
 
 const ComponentLogin = ({ navigation }) => {
 	const [account, setAccount] = useState({
@@ -14,16 +16,59 @@ const ComponentLogin = ({ navigation }) => {
 	})
 
 	const userCTX = useContext(UserContext)
+	const [Notification, setNotification] = useState({
+		type: false,
+		message: '',
+		isShow: false
+	})
 
-	const [fail, setFail] = useState(null)
+	// const handleLogic = async acc => {
+	// 	const response = await LoginAPI(acc)
+	//
+	// 	if (response && response.data) {
+	// 		await AsyncStorage.setItem('token', response.data.token)
+	// 		navigation.navigate('Home')
+	// 	}
+	// }
 
-	const handleLogic = async acc => {
-		const response = await LoginAPI(acc)
-
-		if (response && response.data) {
-			await AsyncStorage.setItem('token', response.data.token)
-			navigation.navigate('Home')
+	useEffect(() => {
+		if (Notification.message.length > 0) {
+			const isShow = setTimeout(() => {
+				setNotification({ type: false, message: '', isShow: false })
+			}, 1500)
+			return () => {
+				clearTimeout(isShow)
+			}
 		}
+	}, [Notification])
+
+	const login = acc => {
+		Keyboard.dismiss()
+		axios
+			.post(`${API_HOST}/api/v1/auth/login`, acc, {
+				headers: {
+					'x-private-key': 'MasdhaMASHF@adfn%sad',
+					'x-application-name': 'AFF-APP'
+				}
+			})
+			.then(res => {
+				if (res) {
+					const token = JSON.stringify(res.data.token)
+					setNotification({ type: true, message: '', isShow: true })
+					// AsyncStorage.setItem('token', token)
+          userCTX.login(USER_ACTION.LOGIN, token)
+					navigation.navigate('Home')
+				}
+			})
+			.catch(err => {
+				if (err.response) {
+					setNotification({
+						type: false,
+						message: 'Tài khoản mật khẩu chưa chính xác',
+						isShow: true
+					})
+				}
+			})
 	}
 
 	const [loaded] = useFonts({
@@ -68,9 +113,7 @@ const ComponentLogin = ({ navigation }) => {
 				<Text style={styles.forgot_button}>Sign up</Text>
 			</TouchableOpacity>
 
-			<TouchableOpacity
-				style={styles.loginBtn}
-				onPress={() => handleLogic(account)}>
+			<TouchableOpacity style={styles.loginBtn} onPress={() => login(account)}>
 				<Text>Login</Text>
 			</TouchableOpacity>
 		</View>

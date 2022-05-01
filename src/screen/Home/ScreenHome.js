@@ -9,9 +9,9 @@ const HomeStack = createStackNavigator()
 const ScreenHome = ({ navigation }) => {
 	return (
 		<HomeStack.Navigator>
-			<HomeStack.Screen name='Home' component={Home} />
-			<HomeStack.Screen name='Detail' component={ProductDetail} />
-			<HomeStack.Screen name='Card' component={Card} />
+			<HomeStack.Screen  name='Home' options={{headerShown: false}} component={Home} />
+			<HomeStack.Screen name='Detail' options={{headerShown: false}} component={ProductDetail} />
+			<HomeStack.Screen name='Card' options={{headerShown: false}} component={Card} />
 		</HomeStack.Navigator>
 	)
 }

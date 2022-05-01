@@ -5,9 +5,9 @@ export const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: '#fff',
 		alignItems: 'center',
-		justifyContent: 'center'
+		justifyContent: 'center',
+    height: '100%'
 	},
-
 	image: {
 		marginBottom: 40
 	},
@@ -22,19 +22,19 @@ export const styles = StyleSheet.create({
 	},
 	inputView: {
 		backgroundColor: '#fff',
-		borderWidth: 1,
+		borderWidth: 2,
 		borderRadius: 10,
 		width: '70%',
 		height: 45,
 		marginBottom: 20,
-		alignItems: 'flex-start'
+		alignItems: 'flex-start',
+    position: "relative",
+    marginVertical: 5
 	},
 
 	TextInput: {
-		height: 50,
-		flex: 1,
-		padding: 10,
-		marginLeft: 20
+    paddingHorizontal: 10,
+    paddingVertical: 12,
 	},
 
 	forgot_button: {
@@ -57,5 +57,23 @@ export const styles = StyleSheet.create({
 		bottom: 0,
 		paddingHorizontal: 10,
 		paddingVertical: 12
-	}
+	},
+  Validation: {
+    color: 'red',
+    fontSize: 12,
+    fontWeight: "400",
+  },
+  ContainerNoti : {
+    flex: 1,
+    zIndex: 10,
+    position: 'absolute',
+    marginBottom: 100,
+    backgroundColor: 'rgba(0,0,0,.5)',
+    padding: 10,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 200,
+    height: 200,
+  }
 })

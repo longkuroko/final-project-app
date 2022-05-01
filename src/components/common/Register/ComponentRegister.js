@@ -1,22 +1,21 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { TextInput, View, Text } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { TextInput, View, Text, ActivityIndicator } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useFonts } from 'expo-font'
 import axios from 'axios'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { styles } from './ComponentRegister.style'
 import { API_HOST } from '../../../util/API'
-import { USER_ACTION, UserContext } from '../../../context/UserContext'
+import Notification from "../../Notification";
 
 const ComponentRegister = ({ navigation }) => {
 	const [account, setAccount] = useState({
 		username: '',
 		email: '',
 		password: '',
-		fullName: '',
+		fullname: '',
 		phoneNumber: ''
 	})
-	const userCTX = useContext(UserContext)
 
 	const [showPassword, setShowPassword] = useState(true)
 	const [validateFullName, setValidateFullName] = useState(false)
@@ -85,11 +84,12 @@ const ComponentRegister = ({ navigation }) => {
 		return null
 	}
 
-	const handleRegister = account => {
+  // eslint-disable-next-line no-shadow
+	const handleRegister = (account) => {
 		if (
 			account.username === '' ||
 			account.password === '' ||
-			account.fullName === '' ||
+			account.fullname === '' ||
 			account.phoneNumber === '' ||
 			account.email === ''
 		) {
@@ -113,9 +113,15 @@ const ComponentRegister = ({ navigation }) => {
 				return
 			}
 			axios
-				.post(`${API_HOST}/api/v1/auth/login`, account)
+				.post(`${API_HOST}/api/v1/auth/register`, account,{
+          headers: {
+            'x-private-key': 'MasdhaMASHF@adfn%sad',
+            'x-application-name': 'AFF-APP'
+          },
+        })
 				.then(res => {
 					if (res.data) {
+            console.log(res.data)
 						setNotifice({
 							type: true,
 							message: 'Đăng ký thành công',
@@ -156,19 +162,6 @@ const ComponentRegister = ({ navigation }) => {
 			<View style={styles.inputView}>
 				<TextInput
 					style={styles.TextInput}
-					placeholder='Enter your full name'
-					onChangeText={fullName => setAccount({ ...account, fullName })}
-					autoCorrect={false}
-					autoCompleteType='off'
-					onEndEditing={e => isValidFullName(e.nativeEvent.text)}
-				/>
-				{validateFullName ? (
-					<Text style={styles.Validation}>Họ và tên không được để trống</Text>
-				) : null}
-			</View>
-			<View style={styles.inputView}>
-				<TextInput
-					style={styles.TextInput}
 					placeholder='Enter your username'
 					onChangeText={username => setAccount({ ...account, username })}
 					autoCorrect={false}
@@ -182,6 +175,37 @@ const ComponentRegister = ({ navigation }) => {
 					</Text>
 				) : null}
 			</View>
+      <View style={styles.inputView}>
+        <View style={{position: 'relative'}}>
+          <TextInput
+            style={styles.TextInput}
+            placeholder='**********'
+            onChangeText={password => setAccount({ ...account, password })}
+            autoCorrect={false}
+            autoCompleteType='off'
+            autoCapitalize='none'
+            onEndEditing={e => isValidPassword(e.nativeEvent.text)}
+            secureTextEntry={showPassword}
+          />
+          <TouchableOpacity
+            style={styles.eyePassword}
+            onPress={() => setShowPassword(!showPassword)}>
+            {
+              // Security on === true
+              showPassword ? (
+                <Icon name='eye-outline' size={15} />
+              ) : (
+                <Icon name='eye-off-outline' size={15} />
+              )
+            }
+          </TouchableOpacity>
+        </View>
+        {validatePassword ? (
+          <Text style={styles.Validation}>
+            Mật khẩu phải dài hơn hoặc bằng 6 kí tự và không chứa kí tự đặc biệt
+          </Text>
+        ) : null}
+      </View>
 			<View style={styles.inputView}>
 				<TextInput
 					style={styles.TextInput}
@@ -197,38 +221,54 @@ const ComponentRegister = ({ navigation }) => {
 					</Text>
 				) : null}
 			</View>
-			<View style={styles.inputView}>
-				<TextInput
-					style={styles.TextInput}
-					placeholder='Enter your password'
-					onChangeText={password => setAccount({ ...account, password })}
-					autoCorrect={false}
-					autoCompleteType='off'
-					autoCapitalize='none'
-					onEndEditing={e => isValidPassword(e.nativeEvent.text)}
-				/>
-				<TouchableOpacity
-					style={styles.eyePassword}
-					onPress={() => setShowPassword(!showPassword)}>
-					{
-						// Security on === true
-						showPassword ? (
-							<Icon name='eye-outline' size={15} />
-						) : (
-							<Icon name='eye-off-outline' size={15} />
-						)
-					}
-				</TouchableOpacity>
-				{validatePassword ? (
-					<Text style={styles.Validation}>
-						Mật khẩu phải dài hơn hoặc bằng 6 kí tự và không chứa kí tự đặc biệt
-					</Text>
-				) : null}
-			</View>
-
-			<TouchableOpacity style={styles.registerBtn}>
+      <View style={styles.inputView}>
+        <TextInput
+          style={styles.TextInput}
+          placeholder='Enter your full name'
+          onChangeText={fullname => setAccount({ ...account, fullname })}
+          autoCorrect={false}
+          autoCompleteType='off'
+          onEndEditing={e => isValidFullName(e.nativeEvent.text)}
+        />
+        {validateFullName ? (
+          <Text style={styles.Validation}>Họ và tên không được để trống</Text>
+        ) : null}
+      </View>
+      <View style={styles.inputView}>
+        <TextInput
+          style={styles.TextInput}
+          placeholder='Enter your phone'
+          onChangeText={phoneNumber => setAccount({ ...account, phoneNumber })}
+          autoCorrect={false}
+          autoCompleteType='off'
+          autoCapitalize='none'
+          onEndEditing={e => isValidPassword(e.nativeEvent.text)}
+        />
+        {validatePassword ? (
+          <Text style={styles.Validation}>
+            Mật khẩu phải dài hơn hoặc bằng 6 kí tự và không chứa kí tự đặc biệt
+          </Text>
+        ) : null}
+      </View>
+      <TouchableOpacity onPress={() => navigation.navigate('ScreenLogin')}>
+        <Text>Account already exists? Login</Text>
+      </TouchableOpacity>
+			<TouchableOpacity style={styles.registerBtn} onPress={() => handleRegister(account)}>
 				<Text>Register</Text>
 			</TouchableOpacity>
+      {/* eslint-disable-next-line no-nested-ternary */}
+      {Notifice.isShow
+        ? Notifice.message !== ""
+          ? <Text style={{
+            fontSize: 15,
+            color: '#fff',
+            fontWeight: '500',
+            textAlign: 'center'}}>{Notifice.message}</Text>
+          : <View style={styles.ContainerNoti}>
+            <ActivityIndicator size="large" color="#00c0d6" />
+          </View>
+        : null
+      }
 		</View>
 	)
 }
