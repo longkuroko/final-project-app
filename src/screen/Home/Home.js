@@ -7,6 +7,7 @@ import { styles } from './ScreenHome.style'
 import CategoryList from '../../components/Home/CategoryList'
 import Card from '../../components/Home/Card'
 import {API_HOST} from "../../util/API";
+import SearchNotFound from "../../components/common/SearchNotFound";
 
 const { width, height } = Dimensions.get('screen')
 
@@ -14,60 +15,55 @@ const { width, height } = Dimensions.get('screen')
 const Home = ({ navigation }) => {
 
   const [products, setProducts] = useState([])
-  const [textSearch, setTextSearch] = useState('');
+  const [textSearch, setTextSearch] = useState('')
+  const [nextPage, setNextPage] = useState(1)
 
   const searchEvent = (searchTxt) => {
     getListProduct(searchTxt)
   }
 
   // eslint-disable-next-line no-shadow
-  const getListProduct = async (textSearch) => {
-    await axios
-      .get(`${API_HOST}/api/v1/mobile/product?search=${textSearch}`, {
+  // const getListProduct = async (textSearch) => {
+  //   await axios
+  //     .get(`${API_HOST}/api/v1/mobile/product?search=${textSearch}`, {
+  //       headers: {
+  //         'x-private-key': 'MasdhaMASHF@adfn%sad',
+  //         'x-application-name': 'AFF-APP'
+  //       }
+  //     })
+  //     .then(res => {
+  //       if (res && res.data.data) {
+  //         // eslint-disable-next-line no-param-reassign
+  //         console.log(res.data.data)
+  //         setProducts(res.data.data)
+  //       }
+  //     })
+  //     .catch(err => {
+  //       console.log(err)
+  //     })
+  // }
+
+  const getProductPaging = async (page, size) => {
+    const {data} = await  axios
+      .get(`${API_HOST}/api/v1/mobile/product?page=${page}&page_size=${size}`, {
         headers: {
           'x-private-key': 'MasdhaMASHF@adfn%sad',
           'x-application-name': 'AFF-APP'
         }
       })
-      .then(res => {
-        if (res && res.data.data) {
-          // eslint-disable-next-line no-param-reassign
-          console.log(res.data.data)
-          setProducts(res.data.data)
-        }
-      })
-      .catch(err => {
-        console.log(err)
-      })
+    setProducts([...products, ...data.data])
   }
-  useEffect(() => {
-    getListProduct(textSearch)
-    // axios
-    //   .get(`${API_HOST}/api/v1/mobile/product`, {
-    //     headers: {
-    //       'x-private-key': 'MasdhaMASHF@adfn%sad',
-    //       'x-application-name': 'AFF-APP'
-    //     }
-    //   })
-    //   .then(res => {
-    //     if (res && res.data.data) {
-    //       // eslint-disable-next-line no-param-reassign
-    //       console.log(res.data.data)
-    //       setProducts(res.data.data)
-    //     }
-    //   })
-    //   .catch(err => {
-    //     console.log(err)
-    //   })
-  }, [])
 
+  useEffect(() => {
+    getProductPaging(1, 12)
+  }, [])
 
 	const [loaded] = useFonts({
 		// eslint-disable-next-line global-require
 		Montserrat: require('../../../assets/fonts/Comfortaa-Bold.ttf')
 	})
 
-	if (!loaded || products.length === 0) {
+	if (!loaded) {
 		return null
 	}
 
@@ -111,9 +107,15 @@ const Home = ({ navigation }) => {
             return <Card product={item} navigation={navigation}/>
         	}}
         />
+
       <TouchableOpacity
-        style={styles.viewMoreBtn}>
-        <Text >View more</Text>
+        style={styles.viewMoreBtn}
+        onPress={() => {
+          getProductPaging(nextPage + 1 , 12)
+          setNextPage(prevPage => prevPage + 1)
+        }}
+        >
+        <Text>View more</Text>
       </TouchableOpacity>
 		</SafeAreaView>
 	)

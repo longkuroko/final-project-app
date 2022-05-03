@@ -2,10 +2,9 @@ import React, { useContext, useEffect, useState } from 'react'
 import { SafeAreaView, ScrollView, View, Image, Text } from 'react-native'
 import { Avatar, Caption, Title, TouchableRipple } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import axios from "axios";
 import { styles } from './ScreenProfile.style'
 import { USER_ACTION, UserContext } from '../../context/UserContext'
-import axios from "axios";
 import {API_HOST} from "../../util/API";
 
 const ScreenProfile = ({ navigation }) => {

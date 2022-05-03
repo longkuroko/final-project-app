@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
 		marginBottom: 10,
 		borderRadius: 10,
 		padding: 15,
-		alignItems: 'center'
+		alignItems: 'center',
 	},
 
 	searchContainer: {

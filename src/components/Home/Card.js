@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { TouchableOpacity, View, Image, Text } from 'react-native'
+import {useFonts} from "expo-font";
 import { styles } from '../../screen/Home/ScreenHome.style'
 
 const Card = ({ product, navigation }) => {
+
+  useFonts({
+    // eslint-disable-next-line global-require
+    Nunito: require('../../../assets/fonts/Nunito-Black.ttf')
+  })
 	return (
 		<TouchableOpacity
 			activeOpacity={0.8}
