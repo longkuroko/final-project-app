@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
 		marginBottom: 10,
 		borderRadius: 10,
 		padding: 15,
-		alignItems: 'center',
+		alignItems: 'center'
 	},
 
 	searchContainer: {
@@ -123,14 +123,14 @@ export const styles = StyleSheet.create({
 		borderBottomWidth: 1,
 		paddingBottom: 5
 	},
-  viewMoreBtn: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 10,
-    height: 50,
-    backgroundColor: '#fff',
-    marginBottom: 5,
-    fontStyle: 'normal',
-    borderWidth: 3
-  }
+	viewMoreBtn: {
+		alignItems: 'center',
+		justifyContent: 'center',
+		borderRadius: 10,
+		height: 50,
+		backgroundColor: '#fff',
+		marginBottom: 5,
+		fontStyle: 'normal',
+		borderWidth: 3
+	}
 })

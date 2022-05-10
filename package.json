@@ -80,6 +80,7 @@
     "expo-font": "~10.0.4",
     "expo-image-picker": "~12.0.1",
     "expo-status-bar": "~1.2.0",
+    "intl": "^1.2.5",
     "lottie-react-native": "^5.0.1",
     "react": "17.0.1",
     "react-dom": "17.0.1",
@@ -92,7 +93,8 @@
     "react-native-screens": "~3.10.1",
     "react-native-stars": "^1.2.2",
     "react-native-vector-icons": "^9.1.0",
-    "react-native-web": "0.17.1"
+    "react-native-web": "0.17.1",
+    "use-debounce": "^8.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

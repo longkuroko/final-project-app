@@ -2,11 +2,9 @@ import React, { useContext, useEffect, useState } from 'react'
 import { TextInput, View, Text, Keyboard } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useFonts } from 'expo-font'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 import { styles } from './ComponentLogin.style'
 import { USER_ACTION, UserContext } from '../../../context/UserContext'
-import LoginAPI from '../../../API/Auth/LoginAPI'
 import { API_HOST } from '../../../util/API'
 
 const ComponentLogin = ({ navigation }) => {
@@ -21,15 +19,6 @@ const ComponentLogin = ({ navigation }) => {
 		message: '',
 		isShow: false
 	})
-
-	// const handleLogic = async acc => {
-	// 	const response = await LoginAPI(acc)
-	//
-	// 	if (response && response.data) {
-	// 		await AsyncStorage.setItem('token', response.data.token)
-	// 		navigation.navigate('Home')
-	// 	}
-	// }
 
 	useEffect(() => {
 		if (Notification.message.length > 0) {
@@ -56,7 +45,7 @@ const ComponentLogin = ({ navigation }) => {
 					const token = JSON.stringify(res.data.token)
 					setNotification({ type: true, message: '', isShow: true })
 					// AsyncStorage.setItem('token', token)
-          userCTX.login(USER_ACTION.LOGIN, token)
+					userCTX.login(USER_ACTION.LOGIN, token)
 					navigation.navigate('Home')
 				}
 			})
@@ -87,7 +76,7 @@ const ComponentLogin = ({ navigation }) => {
 			<View style={styles.inputView}>
 				<TextInput
 					style={styles.TextInput}
-					placeholder='Enter your username'
+					placeholder='Tên đăng nhập...'
 					placeholderTextColor='#003f5c'
 					onChangeText={username => {
 						setAccount({ ...account, username })
@@ -97,7 +86,7 @@ const ComponentLogin = ({ navigation }) => {
 			<View style={styles.inputView}>
 				<TextInput
 					style={styles.TextInput}
-					placeholder='Enter your password'
+					placeholder='Mật khẩu...'
 					placeholderTextColor='#003f5c'
 					onChangeText={password => {
 						setAccount({ ...account, password })
@@ -107,14 +96,14 @@ const ComponentLogin = ({ navigation }) => {
 			</View>
 
 			<TouchableOpacity>
-				<Text style={styles.forgot_button}>Forgot your password?</Text>
+				<Text style={styles.forgot_button}>Quên mật khẩu?</Text>
 			</TouchableOpacity>
-			<TouchableOpacity onPress={() => navigation.navigate('ScreenRegister')}>
-				<Text style={styles.forgot_button}>Sign up</Text>
+			<TouchableOpacity onPress={() => navigation.navigate('Register')}>
+        <Text style={{color: 'blue'}}>Chưa có tài khoản? Đăng ký</Text>
 			</TouchableOpacity>
 
 			<TouchableOpacity style={styles.loginBtn} onPress={() => login(account)}>
-				<Text>Login</Text>
+				<Text>Đăng nhập</Text>
 			</TouchableOpacity>
 		</View>
 	)

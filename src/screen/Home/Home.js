@@ -1,62 +1,49 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import { useFonts } from 'expo-font'
-import {FlatList, SafeAreaView, Text, TextInput, View, TouchableOpacity, Dimensions} from 'react-native'
+import {
+	FlatList,
+	SafeAreaView,
+	Text,
+	TextInput,
+	View,
+	TouchableOpacity,
+	Dimensions
+} from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import axios from "axios";
+import axios from 'axios'
 import { styles } from './ScreenHome.style'
 import CategoryList from '../../components/Home/CategoryList'
 import Card from '../../components/Home/Card'
-import {API_HOST} from "../../util/API";
-import SearchNotFound from "../../components/common/SearchNotFound";
+import { API_HOST } from '../../util/API'
+import SearchNotFound from '../../components/common/SearchNotFound'
+import Searching from '../../components/Home/Searching'
 
 const { width, height } = Dimensions.get('screen')
 
-
 const Home = ({ navigation }) => {
+	const [products, setProducts] = useState([])
+	const [nextPage, setNextPage] = useState(1)
 
-  const [products, setProducts] = useState([])
-  const [textSearch, setTextSearch] = useState('')
-  const [nextPage, setNextPage] = useState(1)
+	const searchEvent = searchTxt => {
+		getListProduct(searchTxt)
+	}
 
-  const searchEvent = (searchTxt) => {
-    getListProduct(searchTxt)
-  }
+	const getProductPaging = async (page, size) => {
+		const { data } = await axios.get(
+			`${API_HOST}/api/v1/mobile/product?page=${page}&page_size=${size}`,
+			{
+				headers: {
+					'x-private-key': 'MasdhaMASHF@adfn%sad',
+					'x-application-name': 'AFF-APP'
+				}
+			}
+		)
+		setProducts([...products, ...data.data])
+	}
 
-  // eslint-disable-next-line no-shadow
-  // const getListProduct = async (textSearch) => {
-  //   await axios
-  //     .get(`${API_HOST}/api/v1/mobile/product?search=${textSearch}`, {
-  //       headers: {
-  //         'x-private-key': 'MasdhaMASHF@adfn%sad',
-  //         'x-application-name': 'AFF-APP'
-  //       }
-  //     })
-  //     .then(res => {
-  //       if (res && res.data.data) {
-  //         // eslint-disable-next-line no-param-reassign
-  //         console.log(res.data.data)
-  //         setProducts(res.data.data)
-  //       }
-  //     })
-  //     .catch(err => {
-  //       console.log(err)
-  //     })
-  // }
-
-  const getProductPaging = async (page, size) => {
-    const {data} = await  axios
-      .get(`${API_HOST}/api/v1/mobile/product?page=${page}&page_size=${size}`, {
-        headers: {
-          'x-private-key': 'MasdhaMASHF@adfn%sad',
-          'x-application-name': 'AFF-APP'
-        }
-      })
-    setProducts([...products, ...data.data])
-  }
-
-  useEffect(() => {
-    getProductPaging(1, 12)
-  }, [])
+	useEffect(() => {
+		getProductPaging(1, 12)
+	}, [])
 
 	const [loaded] = useFonts({
 		// eslint-disable-next-line global-require
@@ -79,44 +66,29 @@ const Home = ({ navigation }) => {
 					</Text>
 				</View>
 			</View>
+			<Searching navigation={navigation} isHomeScreen />
+			<FlatList
+				columnWrapperStyle={{ justifyContent: 'space-between' }}
+				contentContainerStyle={{
+					marginTop: 10,
+					paddingBottom: 50
+				}}
+				numColumns={2}
+				data={products}
+				keyExtractor={(_, index) => index.toString()}
+				renderItem={({ item }) => {
+					return <Card product={item} navigation={navigation} />
+				}}
+			/>
 
-			<View style={{ marginTop: 30, flexDirection: 'row' }}>
-				<View style={styles.searchContainer}>
-          <TouchableOpacity
-          onPress={() => searchEvent(textSearch)}>
-            <Icon name='search' size={25} style={styles.iconSearch} />
-          </TouchableOpacity>
-					<TextInput
-            placeholder='search...'
-            onChangeText={txtSearch => {
-              setTextSearch(txtSearch)
-            }}
-            style={styles.input} />
-				</View>
-			</View>
-        <FlatList
-        	columnWrapperStyle={{ justifyContent: 'space-between' }}
-        	contentContainerStyle={{
-        		marginTop: 10,
-        		paddingBottom: 50,
-        	}}
-        	numColumns={2}
-        	data={products}
-          keyExtractor={(_, index) => index.toString()}
-        	renderItem={({ item }) => {
-            return <Card product={item} navigation={navigation}/>
-        	}}
-        />
-
-      <TouchableOpacity
-        style={styles.viewMoreBtn}
-        onPress={() => {
-          getProductPaging(nextPage + 1 , 12)
-          setNextPage(prevPage => prevPage + 1)
-        }}
-        >
-        <Text>View more</Text>
-      </TouchableOpacity>
+			<TouchableOpacity
+				style={styles.viewMoreBtn}
+				onPress={() => {
+					getProductPaging(nextPage + 1, 12)
+					setNextPage(prevPage => prevPage + 1)
+				}}>
+				<Text>View more</Text>
+			</TouchableOpacity>
 		</SafeAreaView>
 	)
 }

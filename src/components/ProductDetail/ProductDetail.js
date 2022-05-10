@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import {
 	Image,
 	ScrollView,
@@ -14,7 +14,7 @@ import {
 import Entypo from 'react-native-vector-icons/Entypo'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import axios from 'axios'
-import {useFonts} from "expo-font";
+import { useFonts } from 'expo-font'
 import RelatedProductList from './RelatedProductList'
 import ProductCompareList from './ProductCompareList'
 import { API_HOST } from '../../util/API'
@@ -22,7 +22,7 @@ import { API_HOST } from '../../util/API'
 const { width } = Dimensions.get('window')
 const ProductDetail = ({ navigation, route }) => {
 	const product = route.params
-  const [products, setProducts] = useState([])
+	const [products, setProducts] = useState([])
 	const [productDetail, setProductDetail] = useState({
 		productId: null,
 		productName: null,
@@ -38,10 +38,10 @@ const ProductDetail = ({ navigation, route }) => {
 		slug: null
 	})
 
-  useFonts({
-    // eslint-disable-next-line global-require
-    Nunito: require('../../../assets/fonts/Nunito-ExtraLight.ttf')
-  })
+	useFonts({
+		// eslint-disable-next-line global-require
+		Nunito: require('../../../assets/fonts/Nunito-ExtraLight.ttf')
+	})
 
 	// call API get product Detail
 	useEffect(() => {
@@ -55,14 +55,13 @@ const ProductDetail = ({ navigation, route }) => {
 			.then(res => {
 				if (res && res.data) {
 					console.log(res.data)
-				  setProducts(res.data.products)
+					setProducts(res.data.products)
 				}
 			})
 			.catch(err => {
 				console.log(err)
 			})
 	}, [])
-
 
 	const openUrl = async url => {
 		const isSupported = await Linking.canOpenURL(url)
@@ -71,7 +70,7 @@ const ProductDetail = ({ navigation, route }) => {
 		} else {
 			Alert.alert('Can not open this link!')
 		}
- 	}
+	}
 
 	return (
 		<View style={styles.container}>
@@ -92,7 +91,9 @@ const ProductDetail = ({ navigation, route }) => {
 				</View>
 				<View style={styles.productDescription}>
 					<View style={styles.productNameContainer}>
-						<Text style={{...styles.productName, fontFamily: 'Nunito'}}>{product.productName}</Text>
+						<Text style={{ ...styles.productName, fontFamily: 'Nunito' }}>
+							{product.productName}
+						</Text>
 						<TouchableOpacity
 							onPress={() => {
 								openUrl(productDetail.productUrl)
@@ -144,7 +145,7 @@ const styles = StyleSheet.create({
 		borderRadius: 10
 	},
 	detailContainer: {
-		width: "100%",
+		width: '100%',
 		backgroundColor: '#F0F0F3',
 		borderBottomRightRadius: 20,
 		borderBottomLeftRadius: 20,

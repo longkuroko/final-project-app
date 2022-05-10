@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
 		backgroundColor: '#fff',
 		alignItems: 'center',
 		justifyContent: 'center',
-    height: '100%'
+		height: '100%'
 	},
 	image: {
 		marginBottom: 40
@@ -28,13 +28,13 @@ export const styles = StyleSheet.create({
 		height: 45,
 		marginBottom: 20,
 		alignItems: 'flex-start',
-    position: "relative",
-    marginVertical: 5
+		position: 'relative',
+		marginVertical: 5
 	},
 
 	TextInput: {
-    paddingHorizontal: 10,
-    paddingVertical: 12,
+		paddingHorizontal: 10,
+		paddingVertical: 12
 	},
 
 	forgot_button: {
@@ -58,22 +58,22 @@ export const styles = StyleSheet.create({
 		paddingHorizontal: 10,
 		paddingVertical: 12
 	},
-  Validation: {
-    color: 'red',
-    fontSize: 12,
-    fontWeight: "400",
-  },
-  ContainerNoti : {
-    flex: 1,
-    zIndex: 10,
-    position: 'absolute',
-    marginBottom: 100,
-    backgroundColor: 'rgba(0,0,0,.5)',
-    padding: 10,
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 200,
-    height: 200,
-  }
+	Validation: {
+		color: 'red',
+		fontSize: 12,
+		fontWeight: '400'
+	},
+	ContainerNoti: {
+		flex: 1,
+		zIndex: 10,
+		position: 'absolute',
+		marginBottom: 100,
+		backgroundColor: 'rgba(0,0,0,.5)',
+		padding: 10,
+		flexDirection: 'column',
+		alignItems: 'center',
+		justifyContent: 'center',
+		width: 200,
+		height: 200
+	}
 })
