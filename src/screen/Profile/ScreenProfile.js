@@ -99,16 +99,17 @@ const ScreenProfile = ({ navigation }) => {
 						<Text style={styles.menuItemText}>Your Favorites</Text>
 					</View>
 				</TouchableRipple>
-				<TouchableRipple onPress={() => {}}>
+				<TouchableRipple onPress={() => {navigation.navigate('EditProfile', profile)}}>
 					<View style={styles.menuItem}>
-						<Icon name='account-check-outline' color='#2980B9' size={25} />
-						<Text style={styles.menuItemText}>Support</Text>
+						<Icon name='account-edit' color='#2980B9' size={25} />
+						<Text style={styles.menuItemText}>Chỉnh sửa thông tin</Text>
 					</View>
 				</TouchableRipple>
-				<TouchableRipple onPress={() => {}}>
+				<TouchableRipple onPress={() => {
+        }}>
 					<View style={styles.menuItem}>
 						<Icons name='settings' color='#2980B9' size={25} />
-						<Text style={styles.menuItemText}>Settings</Text>
+						<Text style={styles.menuItemText}>Cài đặt</Text>
 					</View>
 				</TouchableRipple>
 				<TouchableRipple
@@ -118,7 +119,7 @@ const ScreenProfile = ({ navigation }) => {
 					}}>
 					<View style={styles.menuItem}>
 						<Icon name='logout' color='#2980B9' size={25} />
-						<Text style={styles.menuItemText}>Log out</Text>
+						<Text style={styles.menuItemText}>Đăng xuất</Text>
 					</View>
 				</TouchableRipple>
 			</View>

@@ -9,6 +9,9 @@ import { UserContext } from '../context/UserContext'
 import ScreenUploadImage from './ImageDetection/ScreenUploadImage'
 import FeedNavigation from './Feed/FeedNavigation'
 import MyComponent from "./Search/SearchingScreen";
+import ProductDetail from "../components/ProductDetail/ProductDetail";
+import EditProfile from "../components/Profile/EditProfile";
+import ProfileNavigator from "./Profile/ProfileStack";
 
 const Drawer = createDrawerNavigator()
 
@@ -40,7 +43,7 @@ const MainScreen = () => {
             headerTitleAlign: 'center',
 						drawerIcon: () => (
 							<Image
-								style={{ width: 20, height: 20,  headerTitleAlign: 'center' }}
+								style={{ width: 20, height: 20, }}
 								source={require('../../assets/news.png')}
 							/>
 						)
@@ -54,7 +57,7 @@ const MainScreen = () => {
             headerTitleAlign: 'center',
 						drawerIcon: () => (
 							<Image
-								style={{ width: 20, height: 20,  headerTitleAlign: 'center' }}
+								style={{ width: 20, height: 20,}}
 								source={require('../../assets/image.png')}
 							/>
 						)
@@ -68,7 +71,7 @@ const MainScreen = () => {
             headerTitleAlign: 'center',
 						drawerIcon: () => (
 							<Image
-								style={{ width: 20, height: 20,  headerTitleAlign: 'center' }}
+								style={{ width: 20, height: 20}}
 								source={require('../../assets/account.png')}
 							/>
 						)
@@ -89,6 +92,15 @@ const MainScreen = () => {
           component={MyComponent}
           options={{
             title: 'Tìm kiếm',
+            drawerItemStyle: { height: 0 },
+            headerTitleAlign: 'center'
+          }}
+        />
+        <Drawer.Screen
+          name='Detail'
+          component={ProductDetail}
+          options={{
+            title: 'Chi tiết sản phẩm',
             drawerItemStyle: { height: 0 },
             headerTitleAlign: 'center'
           }}
@@ -141,8 +153,8 @@ const MainScreen = () => {
 				}}
 			/>
 			<Drawer.Screen
-				name='Thông tin cá nhân'
-				component={ScreenProfile}
+				name='ProfileScreen'
+				component={ProfileNavigator}
 				options={{
 					title: 'Thông tin cá nhân',
           headerTitleAlign: 'center',
@@ -163,6 +175,14 @@ const MainScreen = () => {
           headerTitleAlign: 'center'
         }}
       />
+      <Drawer.Screen
+        name="EditProfileScreen"
+        component={ProfileNavigator}
+        options={{
+          title: 'Chỉnh sửa thông tin',
+          drawerItemStyle: { height: 0 },
+          headerTitleAlign: 'center'
+        }} />
 		</Drawer.Navigator>
 	)
 }

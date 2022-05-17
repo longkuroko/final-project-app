@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
 import { FlatList } from 'react-native'
-import { API_HOST } from '../../util/API'
 import ProductComparingCard from './productComparingCard'
 
 const ProductCompareList = ({ data, navigation }) => {

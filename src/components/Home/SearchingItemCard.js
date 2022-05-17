@@ -29,7 +29,7 @@ const SearchingItemCard = ({ product, navigation }) => {
 
 const styles = StyleSheet.create({
   card: {
-    width: 300,
+    width: 270,
     height: 100,
     marginVertical: 6,
     flexDirection: 'row',

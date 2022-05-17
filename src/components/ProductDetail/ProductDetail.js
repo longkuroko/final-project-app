@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import {
-	Image,
-	ScrollView,
-	TouchableOpacity,
-	StyleSheet,
-	Text,
-	View,
-	StatusBar,
-	Dimensions,
-	Linking,
-	Alert
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  StyleSheet,
+  Text,
+  View,
+  StatusBar,
+  Dimensions,
+  Linking,
+  Alert
 } from 'react-native'
 import Entypo from 'react-native-vector-icons/Entypo'
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -18,27 +18,18 @@ import { useFonts } from 'expo-font'
 import RelatedProductList from './RelatedProductList'
 import ProductCompareList from './ProductCompareList'
 import { API_HOST } from '../../util/API'
+import 'intl';
+import 'intl/locale-data/jsonp/fr';
 
 const { width } = Dimensions.get('window')
 const ProductDetail = ({ navigation, route }) => {
 	const product = route.params
 	const [products, setProducts] = useState([])
-	const [productDetail, setProductDetail] = useState({
-		productId: null,
-		productName: null,
-		productUrl: null,
-		thumbnail: null,
-		isSale: false,
-		salePrice: null,
-		discountPercent: null,
-		average: null,
-		sold: null,
-		description: null,
-		merchant: null,
-		slug: null
-	})
+	const [productDetails, setProductDetails] = useState([])
 
-	useFonts({
+  const formatCurrency =new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.price)
+
+  useFonts({
 		// eslint-disable-next-line global-require
 		Nunito: require('../../../assets/fonts/Nunito-ExtraLight.ttf')
 	})
@@ -55,13 +46,13 @@ const ProductDetail = ({ navigation, route }) => {
 			.then(res => {
 				if (res && res.data) {
 					console.log(res.data)
-					setProducts(res.data.products)
+          setProductDetails(res.data.products)
 				}
 			})
 			.catch(err => {
 				console.log(err)
 			})
-	}, [])
+	}, [product.productTemplateId])
 
 	const openUrl = async url => {
 		const isSupported = await Linking.canOpenURL(url)
@@ -78,7 +69,9 @@ const ProductDetail = ({ navigation, route }) => {
 			<ScrollView>
 				<View styles={styles.detailContainer}>
 					<View style={styles.backContainer}>
-						<TouchableOpacity onPress={() => navigation.goBack('Home')}>
+						<TouchableOpacity onPress={() => {
+              navigation.goBack('Home')
+            }}>
 							<Entypo name='chevron-left' style={styles.backBtn} />
 						</TouchableOpacity>
 					</View>
@@ -96,7 +89,7 @@ const ProductDetail = ({ navigation, route }) => {
 						</Text>
 						<TouchableOpacity
 							onPress={() => {
-								openUrl(productDetail.productUrl)
+								openUrl(products.productUrl)
 							}}>
 							<Ionicons name='link-outline' style={styles.linkProduct} />
 						</TouchableOpacity>
@@ -107,15 +100,15 @@ const ProductDetail = ({ navigation, route }) => {
 				</View>
 				<View style={{ paddingHorizontal: 16 }}>
 					<Text style={styles.productPriceText}>
-						&#8377; {product.price}.00 VNĐ
+            {formatCurrency}
 					</Text>
 				</View>
-				<View>
-					<Text>So sánh giá</Text>
-					<ProductCompareList data={products} navigation={navigation} />
+				<View style={styles.comparingBox}>
+					<Text style={styles.comparingText}>So sánh giá</Text>
+					<ProductCompareList data={productDetails} navigation={navigation} />
 				</View>
-				<View>
-					<Text>Sản phẩm liên quan</Text>
+				<View style={styles.comparingBox}>
+					<Text style={styles.comparingText}>Sản phẩm liên quan</Text>
 					<RelatedProductList navigation={navigation} />
 				</View>
 			</ScrollView>
@@ -210,11 +203,17 @@ const styles = StyleSheet.create({
 	},
 	comparingText: {
 		fontSize: 20,
-		fontWeight: '600',
+		fontWeight: 'bold',
 		letterSpacing: 0.5,
 		marginVertical: 10,
-		color: '#000000'
-	}
+		color: '#000000',
+    marginLeft: 10
+	},
+  comparingBox: {
+    marginVertical: 4,
+    marginLeft: 3,
+    justifyContent: 'space-between'
+  }
 })
 
 export default ProductDetail
