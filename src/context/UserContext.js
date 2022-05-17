@@ -4,20 +4,26 @@ export const UserContext = createContext()
 
 export const USER_ACTION = {
 	LOGIN: 'LOGIN',
-	LOGOUT: 'LOGOUT'
+	LOGOUT: 'LOGOUT',
+	REGISTER: 'REGISTER'
 }
 
 const UserInitialState = {
-	login: false
+	username: null,
+	token: null
 }
 
 const reducer = (state, action) => {
 	switch (action.type) {
 		case USER_ACTION.LOGIN:
-			return { ...state, login: true }
+			// luu async
+			return { ...state, token: action.token }
 
 		case USER_ACTION.LOGOUT:
-			return { ...state, login: false }
+			return { ...state, token: null }
+
+		case USER_ACTION.REGISTER:
+			return { ...state, account: action.account, navigate: action.navigate }
 
 		default:
 			return state
@@ -28,7 +34,10 @@ const AppContext = props => {
 	const [store, dispatch] = useReducer(reducer, UserInitialState)
 	const userProps = {
 		state: store,
-		verify: type => dispatch({ type })
+		login: (type, token) => dispatch({ type, token }),
+		logout: type => dispatch({ type }),
+		loginAfterSignup: (type, account, navigate) =>
+			dispatch({ type, account, navigate })
 	}
 
 	return (
