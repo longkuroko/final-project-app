@@ -251,7 +251,7 @@ const ComponentRegister = ({ navigation }) => {
 				) : null}
 			</View>
 			<TouchableOpacity onPress={() => navigation.navigate('ScreenLogin')}>
-				<Text style={{color:'#4D96FF'}}>Đã có tải khoản? đăng nhập</Text>
+				<Text style={{ color: '#4D96FF' }}>Đã có tải khoản? đăng nhập</Text>
 			</TouchableOpacity>
 			<TouchableOpacity
 				style={styles.registerBtn}

@@ -4,11 +4,11 @@ import axios from 'axios'
 import { API_HOST } from '../../util/API'
 import Card from '../Home/Card'
 
-const RelatedProductList = ({ navigation }) => {
+const RelatedProductList = ({ productName, navigation }) => {
 	const [relativeProducts, setRelativeProduct] = useState([])
 	useEffect(() => {
 		axios
-			.get(`${API_HOST}/api/v1/mobile/product?page=${1}&page_size=${4}`, {
+			.get(`${API_HOST}/api/v1/mobile/product?page=${1}&page_size=${8}&search=${productName}`, {
 				headers: {
 					'x-private-key': 'MasdhaMASHF@adfn%sad',
 					'x-application-name': 'AFF-APP'
@@ -24,10 +24,11 @@ const RelatedProductList = ({ navigation }) => {
 			.catch(err => {
 				console.log(err)
 			})
-	}, [])
+	}, [productName])
 
 	return (
 		<FlatList
+			nestedScrollEnabled
 			horizontal
 			data={relativeProducts}
 			bouncesZoom

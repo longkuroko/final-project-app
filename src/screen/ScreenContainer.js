@@ -8,10 +8,10 @@ import ScreenProfile from './Profile/ScreenProfile'
 import { UserContext } from '../context/UserContext'
 import ScreenUploadImage from './ImageDetection/ScreenUploadImage'
 import FeedNavigation from './Feed/FeedNavigation'
-import MyComponent from "./Search/SearchingScreen";
-import ProductDetail from "../components/ProductDetail/ProductDetail";
-import EditProfile from "../components/Profile/EditProfile";
-import ProfileNavigator from "./Profile/ProfileStack";
+import MyComponent from './Search/SearchingScreen'
+import ProductDetail from '../components/ProductDetail/ProductDetail'
+import EditProfile from '../components/Profile/EditProfile'
+import ProfileNavigator from './Profile/ProfileStack'
 
 const Drawer = createDrawerNavigator()
 
@@ -26,7 +26,7 @@ const MainScreen = () => {
 					component={ScreenHome}
 					options={{
 						title: 'Trang chủ',
-            headerTitleAlign: 'center',
+						headerTitleAlign: 'center',
 						drawerIcon: () => (
 							<Image
 								style={{ width: 20, height: 20 }}
@@ -40,10 +40,10 @@ const MainScreen = () => {
 					component={FeedNavigation}
 					options={{
 						title: 'Bảng tin',
-            headerTitleAlign: 'center',
+						headerTitleAlign: 'center',
 						drawerIcon: () => (
 							<Image
-								style={{ width: 20, height: 20, }}
+								style={{ width: 20, height: 20 }}
 								source={require('../../assets/news.png')}
 							/>
 						)
@@ -54,10 +54,10 @@ const MainScreen = () => {
 					component={ScreenUploadImage}
 					options={{
 						title: 'Tìm kiếm bằng hình ảnh',
-            headerTitleAlign: 'center',
+						headerTitleAlign: 'center',
 						drawerIcon: () => (
 							<Image
-								style={{ width: 20, height: 20,}}
+								style={{ width: 20, height: 20 }}
 								source={require('../../assets/image.png')}
 							/>
 						)
@@ -68,54 +68,54 @@ const MainScreen = () => {
 					component={ScreenLogin}
 					options={{
 						title: 'Đăng nhập',
-            headerTitleAlign: 'center',
+						headerTitleAlign: 'center',
 						drawerIcon: () => (
 							<Image
-								style={{ width: 20, height: 20}}
+								style={{ width: 20, height: 20 }}
 								source={require('../../assets/account.png')}
 							/>
 						)
 					}}
 				/>
 				<Drawer.Screen
-          name='Register'
-          component={ScreenRegister}
-          options={{
-            drawerItemStyle: {
-              height: 0,
-              headerTitleAlign: 'center'
-            },
-          }}
-        />
-        <Drawer.Screen
-          name='Searching'
-          component={MyComponent}
-          options={{
-            title: 'Tìm kiếm',
-            drawerItemStyle: { height: 0 },
-            headerTitleAlign: 'center'
-          }}
-        />
-        <Drawer.Screen
-          name='Detail'
-          component={ProductDetail}
-          options={{
-            title: 'Chi tiết sản phẩm',
-            drawerItemStyle: { height: 0 },
-            headerTitleAlign: 'center'
-          }}
-        />
+					name='Register'
+					component={ScreenRegister}
+					options={{
+						drawerItemStyle: {
+							height: 0,
+							headerTitleAlign: 'center'
+						}
+					}}
+				/>
+				<Drawer.Screen
+					name='Searching'
+					component={MyComponent}
+					options={{
+						title: 'Tìm kiếm',
+						drawerItemStyle: { height: 0 },
+						headerTitleAlign: 'center'
+					}}
+				/>
+				<Drawer.Screen
+					name='Detail'
+					component={ProductDetail}
+					options={{
+						title: 'Chi tiết sản phẩm',
+						drawerItemStyle: { height: 0 },
+						headerTitleAlign: 'center'
+					}}
+				/>
 			</Drawer.Navigator>
 		)
 	}
 	return (
 		<Drawer.Navigator>
 			<Drawer.Screen
-				name='Home'
+				name='ScreenHome'
 				component={ScreenHome}
 				options={{
 					title: 'Trang chủ',
-          headerTitleAlign: 'center',
+					headerTitleAlign: 'center',
 					drawerIcon: () => (
 						<Image
 							style={{ width: 20, height: 20 }}
@@ -129,10 +129,10 @@ const MainScreen = () => {
 				component={FeedNavigation}
 				options={{
 					title: 'Bảng tin',
-          headerTitleAlign: 'center',
+					headerTitleAlign: 'center',
 					drawerIcon: () => (
 						<Image
-							style={{ width: 20, height: 20,}}
+							style={{ width: 20, height: 20 }}
 							source={require('../../assets/news.png')}
 						/>
 					)
@@ -143,10 +143,10 @@ const MainScreen = () => {
 				component={ScreenUploadImage}
 				options={{
 					title: 'Tìm kiếm bằng hình ảnh',
-          headerTitleAlign: 'center',
+					headerTitleAlign: 'center',
 					drawerIcon: () => (
 						<Image
-							style={{ width: 20, height: 20, }}
+							style={{ width: 20, height: 20 }}
 							source={require('../../assets/image.png')}
 						/>
 					)
@@ -157,32 +157,33 @@ const MainScreen = () => {
 				component={ProfileNavigator}
 				options={{
 					title: 'Thông tin cá nhân',
-          headerTitleAlign: 'center',
+					headerTitleAlign: 'center',
 					drawerIcon: () => (
 						<Image
-							style={{ width: 20, height: 20,}}
+							style={{ width: 20, height: 20 }}
 							source={require('../../assets/account.png')}
 						/>
 					)
 				}}
 			/>
-      <Drawer.Screen
-        name='Searching'
-        component={MyComponent}
-        options={{
-          title: 'Tìm kiếm',
-          drawerItemStyle: { height: 0 },
-          headerTitleAlign: 'center'
-        }}
-      />
-      <Drawer.Screen
-        name="EditProfileScreen"
-        component={ProfileNavigator}
-        options={{
-          title: 'Chỉnh sửa thông tin',
-          drawerItemStyle: { height: 0 },
-          headerTitleAlign: 'center'
-        }} />
+			<Drawer.Screen
+				name='Searching'
+				component={MyComponent}
+				options={{
+					title: 'Tìm kiếm',
+					drawerItemStyle: { height: 0 },
+					headerTitleAlign: 'center'
+				}}
+			/>
+			<Drawer.Screen
+				name='EditProfileScreen'
+				component={ProfileNavigator}
+				options={{
+					title: 'Chỉnh sửa thông tin',
+					drawerItemStyle: { height: 0 },
+					headerTitleAlign: 'center'
+				}}
+			/>
 		</Drawer.Navigator>
 	)
 }
