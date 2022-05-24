@@ -2,15 +2,18 @@ import React, { useEffect, useState } from 'react'
 import { TouchableOpacity, View, Image, Text } from 'react-native'
 import { useFonts } from 'expo-font'
 import { styles } from '../../screen/Home/ScreenHome.style'
-import 'intl';
-import 'intl/locale-data/jsonp/fr';
+import 'intl'
+import 'intl/locale-data/jsonp/fr'
 
 const Card = ({ product, navigation }) => {
 	useFonts({
 		// eslint-disable-next-line global-require
 		Nunito: require('../../../assets/fonts/Nunito-Black.ttf')
 	})
-  const formatCurrency =new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.price)
+	const formatCurrency = new Intl.NumberFormat('vi-VN', {
+		style: 'currency',
+		currency: 'VND'
+	}).format(product.price)
 	return (
 		<TouchableOpacity
 			activeOpacity={0.8}

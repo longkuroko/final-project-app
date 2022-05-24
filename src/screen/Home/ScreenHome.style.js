@@ -114,10 +114,10 @@ export const styles = StyleSheet.create({
 		borderBottomLeftRadius: 25
 	},
 	categoryListContainer: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		marginTop: 40,
-		paddingHorizontal: 40
+    flexDirection: 'row',
+    marginTop: 30,
+    marginBottom: 20,
+    justifyContent: 'space-between',
 	},
 	activeCategoryListText: {
 		borderBottomWidth: 1,

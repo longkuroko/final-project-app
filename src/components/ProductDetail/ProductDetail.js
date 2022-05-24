@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import {
-  Image,
-  ScrollView,
-  TouchableOpacity,
-  StyleSheet,
-  Text,
-  View,
-  StatusBar,
-  Dimensions,
-  Linking,
-  Alert
+	Image,
+	ScrollView,
+	TouchableOpacity,
+	StyleSheet,
+	Text,
+	View,
+	StatusBar,
+	Dimensions,
+	Linking,
+	Alert,
+	FlatList
 } from 'react-native'
 import Entypo from 'react-native-vector-icons/Entypo'
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -18,18 +19,22 @@ import { useFonts } from 'expo-font'
 import RelatedProductList from './RelatedProductList'
 import ProductCompareList from './ProductCompareList'
 import { API_HOST } from '../../util/API'
-import 'intl';
-import 'intl/locale-data/jsonp/fr';
+import 'intl'
+import 'intl/locale-data/jsonp/fr'
 
 const { width } = Dimensions.get('window')
 const ProductDetail = ({ navigation, route }) => {
 	const product = route.params
 	const [products, setProducts] = useState([])
 	const [productDetails, setProductDetails] = useState([])
+  const relatedProductName = product.productName.slice(0, 15);
 
-  const formatCurrency =new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.price)
+	const formatCurrency = new Intl.NumberFormat('vi-VN', {
+		style: 'currency',
+		currency: 'VND'
+	}).format(product.price)
 
-  useFonts({
+	useFonts({
 		// eslint-disable-next-line global-require
 		Nunito: require('../../../assets/fonts/Nunito-ExtraLight.ttf')
 	})
@@ -46,7 +51,7 @@ const ProductDetail = ({ navigation, route }) => {
 			.then(res => {
 				if (res && res.data) {
 					console.log(res.data)
-          setProductDetails(res.data.products)
+					setProductDetails(res.data.products)
 				}
 			})
 			.catch(err => {
@@ -62,56 +67,63 @@ const ProductDetail = ({ navigation, route }) => {
 			Alert.alert('Can not open this link!')
 		}
 	}
-
 	return (
 		<View style={styles.container}>
 			<StatusBar backgroundColor='#F0F0F3' barStyle='dark-content' />
-			<ScrollView>
-				<View styles={styles.detailContainer}>
-					<View style={styles.backContainer}>
-						<TouchableOpacity onPress={() => {
-              navigation.goBack('Home')
-            }}>
-							<Entypo name='chevron-left' style={styles.backBtn} />
-						</TouchableOpacity>
+			<FlatList
+				data={[1]}
+				keyExtractor={(item, index) => index}
+				renderItem={() => (
+					<View>
+						<View styles={styles.detailContainer}>
+							<View style={styles.backContainer}>
+								<TouchableOpacity
+									onPress={() => {
+										navigation.goBack('Home')
+									}}>
+									<Entypo name='chevron-left' style={styles.backBtn} />
+								</TouchableOpacity>
+							</View>
+							<View style={styles.imageContainer}>
+								<Image
+									source={{ uri: product.thumbnail }}
+									style={styles.imageProduct}
+								/>
+							</View>
+						</View>
+						<View style={styles.productDescription}>
+							<View style={styles.productNameContainer}>
+								<Text style={{ ...styles.productName, fontFamily: 'Nunito' }}>
+									{product.productName}
+								</Text>
+								<TouchableOpacity
+									onPress={() => {
+										openUrl(products.productUrl)
+									}}>
+									<Ionicons name='link-outline' style={styles.linkProduct} />
+								</TouchableOpacity>
+							</View>
+							<Text style={styles.productDescriptionText}>
+								this product is so good dude
+							</Text>
+						</View>
+						<View style={{ paddingHorizontal: 16 }}>
+							<Text style={styles.productPriceText}>{formatCurrency}</Text>
+						</View>
+						<View style={styles.comparingBox}>
+							<Text style={styles.comparingText}>So sánh giá</Text>
+							<ProductCompareList
+								data={productDetails}
+								navigation={navigation}
+							/>
+						</View>
+						<View style={styles.comparingBox}>
+							<Text style={styles.comparingText}>Sản phẩm liên quan</Text>
+							<RelatedProductList productName={relatedProductName} navigation={navigation} />
+						</View>
 					</View>
-					<View style={styles.imageContainer}>
-						<Image
-							source={{ uri: product.thumbnail }}
-							style={styles.imageProduct}
-						/>
-					</View>
-				</View>
-				<View style={styles.productDescription}>
-					<View style={styles.productNameContainer}>
-						<Text style={{ ...styles.productName, fontFamily: 'Nunito' }}>
-							{product.productName}
-						</Text>
-						<TouchableOpacity
-							onPress={() => {
-								openUrl(products.productUrl)
-							}}>
-							<Ionicons name='link-outline' style={styles.linkProduct} />
-						</TouchableOpacity>
-					</View>
-					<Text style={styles.productDescriptionText}>
-						this product is so good dude
-					</Text>
-				</View>
-				<View style={{ paddingHorizontal: 16 }}>
-					<Text style={styles.productPriceText}>
-            {formatCurrency}
-					</Text>
-				</View>
-				<View style={styles.comparingBox}>
-					<Text style={styles.comparingText}>So sánh giá</Text>
-					<ProductCompareList data={productDetails} navigation={navigation} />
-				</View>
-				<View style={styles.comparingBox}>
-					<Text style={styles.comparingText}>Sản phẩm liên quan</Text>
-					<RelatedProductList navigation={navigation} />
-				</View>
-			</ScrollView>
+				)}
+			/>
 		</View>
 	)
 }
@@ -207,13 +219,13 @@ const styles = StyleSheet.create({
 		letterSpacing: 0.5,
 		marginVertical: 10,
 		color: '#000000',
-    marginLeft: 10
+		marginLeft: 10
 	},
-  comparingBox: {
-    marginVertical: 4,
-    marginLeft: 3,
-    justifyContent: 'space-between'
-  }
+	comparingBox: {
+		marginVertical: 4,
+		marginLeft: 3,
+		justifyContent: 'space-between'
+	}
 })
 
 export default ProductDetail

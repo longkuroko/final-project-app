@@ -5,6 +5,7 @@ import ProductComparingCard from './productComparingCard'
 const ProductCompareList = ({ data, navigation }) => {
 	return (
 		<FlatList
+			nestedScrollEnabled
 			contentContainerStyle={{
 				marginTop: 10,
 				paddingBottom: 50

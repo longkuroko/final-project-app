@@ -6,12 +6,12 @@ import {
 	Text,
 	StyleSheet,
 	Linking,
-	Alert,
+	Alert
 } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { useFonts } from 'expo-font'
-import 'intl';
-import 'intl/locale-data/jsonp/fr';
+import 'intl'
+import 'intl/locale-data/jsonp/fr'
 
 const ProductComparingCard = ({ product, navigation }) => {
 	const openUrl = async url => {
@@ -26,53 +26,56 @@ const ProductComparingCard = ({ product, navigation }) => {
 		// eslint-disable-next-line global-require
 		Nunito: require('../../../assets/fonts/Nunito-Light.ttf')
 	})
-  const formatCurrency =new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.salePrice)
+	const formatCurrency = new Intl.NumberFormat('vi-VN', {
+		style: 'currency',
+		currency: 'VND'
+	}).format(product.salePrice)
 
 	return (
-    <View style={styles.comparingContainer}>
-      <TouchableOpacity
-        onPress={() => navigation.navigate('Detail', product)}
-        style={styles.card}>
-        <View style={styles.container}>
-          <Image
-            source={{ uri: product.thumbnail }}
-            style={styles.productImage}
-          />
-        </View>
-        <View style={{}}>
-          <Text style={{ ...styles.productNameText, fontFamily: 'Nunito' }}>
-            {product.productName}
-          </Text>
-          <View style={styles.productPriceContainer}>
-            <Text style={styles.productPriceText}>{formatCurrency}</Text>
-          </View>
-          <View>
-            <Text style={styles.merchant}>Nơi bán: {product.merchant}</Text>
-            <TouchableOpacity
-              onPress={() => {
-                openUrl(product.productUrl)
-              }}
-              style={styles.linkView}>
-              <Text style={styles.linkProduct}>Truy cập nơi bán</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </TouchableOpacity>
-    </View>
+		<View style={styles.comparingContainer}>
+			<TouchableOpacity
+				onPress={() => navigation.navigate('Detail', product)}
+				style={styles.card}>
+				<View style={styles.container}>
+					<Image
+						source={{ uri: product.thumbnail }}
+						style={styles.productImage}
+					/>
+				</View>
+				<View style={{}}>
+					<Text style={{ ...styles.productNameText, fontFamily: 'Nunito' }}>
+						{product.productName}
+					</Text>
+					<View style={styles.productPriceContainer}>
+						<Text style={styles.productPriceText}>{formatCurrency}</Text>
+					</View>
+					<View>
+						<Text style={styles.merchant}>Nơi bán: {product.merchant}</Text>
+						<TouchableOpacity
+							onPress={() => {
+								openUrl(product.productUrl)
+							}}
+							style={styles.linkView}>
+							<Text style={styles.linkProduct}>Truy cập nơi bán</Text>
+						</TouchableOpacity>
+					</View>
+				</View>
+			</TouchableOpacity>
+		</View>
 	)
 }
 
 const styles = StyleSheet.create({
-  comparingContainer: {
-    margin: 8,
-    borderRadius: 10,
-    elevation: 20,
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.5,
-    shadowRadius: 2,
-    shadowColor: '#333',
-    backgroundColor: '#fff',
-  },
+	comparingContainer: {
+		margin: 8,
+		borderRadius: 10,
+		elevation: 20,
+		shadowOffset: { width: 0, height: 1 },
+		shadowOpacity: 0.5,
+		shadowRadius: 2,
+		shadowColor: '#333',
+		backgroundColor: '#fff'
+	},
 	card: {
 		width: 300,
 		height: 100,
@@ -80,14 +83,14 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		paddingHorizontal: 10,
-		paddingVertical: 5,
+		paddingVertical: 5
 	},
 	container: {
 		width: '30%',
 		height: 100,
 		padding: 14,
 		justifyContent: 'center',
-		alignItems: 'center',
+		alignItems: 'center'
 	},
 	productImage: {
 		width: 100,
@@ -114,7 +117,7 @@ const styles = StyleSheet.create({
 		marginRight: 4
 	},
 	linkView: {
-	  flexDirection: 'row',
+		flexDirection: 'row'
 	},
 	productLink: {
 		fontSize: 16,
@@ -128,9 +131,9 @@ const styles = StyleSheet.create({
 		fontFamily: 'Nunito',
 		fontWeight: '300'
 	},
-  linkProduct: {
-    fontSize: 15,
-    color:'#0043f9'
-  }
+	linkProduct: {
+		fontSize: 15,
+		color: '#0043f9'
+	}
 })
 export default ProductComparingCard

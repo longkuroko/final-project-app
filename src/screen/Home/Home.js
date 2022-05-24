@@ -4,7 +4,6 @@ import {
 	FlatList,
 	SafeAreaView,
 	Text,
-	TextInput,
 	View,
 	TouchableOpacity,
 	Dimensions
@@ -12,21 +11,36 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import axios from 'axios'
 import { styles } from './ScreenHome.style'
-import CategoryList from '../../components/Home/CategoryList'
 import Card from '../../components/Home/Card'
 import { API_HOST } from '../../util/API'
 import SearchNotFound from '../../components/common/SearchNotFound'
 import Searching from '../../components/Home/Searching'
+import Category from "../../components/Category/Category";
 
 const { width, height } = Dimensions.get('screen')
 
 const Home = ({ navigation }) => {
 	const [products, setProducts] = useState([])
 	const [nextPage, setNextPage] = useState(1)
+  const [categories, setCategories] = useState([])
 
 	const searchEvent = searchTxt => {
 		getListProduct(searchTxt)
 	}
+
+  const getCategories = async () => {
+    await axios
+      .get(`${API_HOST}/api/v1/admin/category`)
+      .then(res => {
+        if (res && res.data) {
+          console.log('category', res.data)
+          setCategories(res.data)
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
 
 	const getProductPaging = async (page, size) => {
 		const { data } = await axios.get(
@@ -43,6 +57,7 @@ const Home = ({ navigation }) => {
 
 	useEffect(() => {
 		getProductPaging(1, 12)
+    getCategories()
 	}, [])
 
 	const [loaded] = useFonts({
@@ -67,6 +82,16 @@ const Home = ({ navigation }) => {
 				</View>
 			</View>
 			<Searching navigation={navigation} isHomeScreen />
+      <View style={styles.categoryListContainer}>
+        <FlatList
+          horizontal
+          data={categories}
+          keyExtractor={(_, index) => index.toString()}
+          renderItem={({ item }) => {
+            return <Category data={item} />
+          }}
+        />
+      </View>
 			<FlatList
 				columnWrapperStyle={{ justifyContent: 'space-between' }}
 				contentContainerStyle={{
@@ -80,15 +105,14 @@ const Home = ({ navigation }) => {
 					return <Card product={item} navigation={navigation} />
 				}}
 			/>
-
-			<TouchableOpacity
-				style={styles.viewMoreBtn}
-				onPress={() => {
-					getProductPaging(nextPage + 1, 12)
-					setNextPage(prevPage => prevPage + 1)
-				}}>
-				<Text>View more</Text>
-			</TouchableOpacity>
+      <TouchableOpacity
+        style={styles.viewMoreBtn}
+        onPress={() => {
+          getProductPaging(nextPage + 1, 12)
+          setNextPage(prevPage => prevPage + 1)
+        }}>
+        <Text>View more</Text>
+      </TouchableOpacity>
 		</SafeAreaView>
 	)
 }

@@ -12,11 +12,13 @@ const ScreenProfile = ({ navigation }) => {
 	const userCTX = useContext(UserContext)
 
 	const [profile, setProfile] = useState({
+    userId: null,
 		username: null,
 		email: null,
 		avatar: null,
 		phone: null,
-		fullName: null
+		fullName: null,
+    imgUrl: null
 	})
 
 	useEffect(() => {
@@ -38,7 +40,9 @@ const ScreenProfile = ({ navigation }) => {
 						username: response.data.username,
 						email: response.data.email,
 						phone: response.data.phoneNumber,
-						fullName: response.data.fullName
+						fullName: response.data.fullName,
+            imgUrl: response.data.imgUrl,
+            userId: response.data.userId
 					})
 				}
 			})
@@ -59,7 +63,7 @@ const ScreenProfile = ({ navigation }) => {
 			<View style={styles.userInfoSection}>
 				<View style={{ flexDirection: 'row', marginTop: 15 }}>
 					<Avatar.Image
-						source={require('../../../assets/account.png')}
+						source={{uri: profile.imgUrl }}
 						size={80}
 					/>
 					<View style={{ marginLeft: 20 }}>
@@ -99,14 +103,16 @@ const ScreenProfile = ({ navigation }) => {
 						<Text style={styles.menuItemText}>Your Favorites</Text>
 					</View>
 				</TouchableRipple>
-				<TouchableRipple onPress={() => {navigation.navigate('EditProfile', profile)}}>
+				<TouchableRipple
+					onPress={() => {
+						navigation.navigate('EditProfile', profile)
+					}}>
 					<View style={styles.menuItem}>
 						<Icon name='account-edit' color='#2980B9' size={25} />
 						<Text style={styles.menuItemText}>Chỉnh sửa thông tin</Text>
 					</View>
 				</TouchableRipple>
-				<TouchableRipple onPress={() => {
-        }}>
+				<TouchableRipple onPress={() => {}}>
 					<View style={styles.menuItem}>
 						<Icons name='settings' color='#2980B9' size={25} />
 						<Text style={styles.menuItemText}>Cài đặt</Text>

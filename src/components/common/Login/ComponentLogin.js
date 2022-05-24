@@ -99,7 +99,7 @@ const ComponentLogin = ({ navigation }) => {
 				<Text style={styles.forgot_button}>Quên mật khẩu?</Text>
 			</TouchableOpacity>
 			<TouchableOpacity onPress={() => navigation.navigate('Register')}>
-        <Text style={{color: 'blue'}}>Chưa có tài khoản? Đăng ký</Text>
+				<Text style={{ color: 'blue' }}>Chưa có tài khoản? Đăng ký</Text>
 			</TouchableOpacity>
 
 			<TouchableOpacity style={styles.loginBtn} onPress={() => login(account)}>
