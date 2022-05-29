@@ -184,6 +184,15 @@ const MainScreen = () => {
 					headerTitleAlign: 'center'
 				}}
 			/>
+      <Drawer.Screen
+        name='Detail'
+        component={ProductDetail}
+        options={{
+          title: 'Chi tiết sản phẩm',
+          drawerItemStyle: { height: 0 },
+          headerTitleAlign: 'center'
+        }}
+      />
 		</Drawer.Navigator>
 	)
 }

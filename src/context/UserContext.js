@@ -5,12 +5,14 @@ export const UserContext = createContext()
 export const USER_ACTION = {
 	LOGIN: 'LOGIN',
 	LOGOUT: 'LOGOUT',
-	REGISTER: 'REGISTER'
+	REGISTER: 'REGISTER',
+  UPDATE_PROFILE: 'UPDATE_PROFILE'
 }
 
 const UserInitialState = {
 	username: null,
-	token: null
+	token: null,
+  updateUpdate: {}
 }
 
 const reducer = (state, action) => {
@@ -21,6 +23,9 @@ const reducer = (state, action) => {
 
 		case USER_ACTION.LOGOUT:
 			return { ...state, token: null }
+
+    case USER_ACTION.UPDATE_PROFILE:
+      return { ...state, updateUpdate: {} }
 
 		case USER_ACTION.REGISTER:
 			return { ...state, account: action.account, navigate: action.navigate }
@@ -37,7 +42,8 @@ const AppContext = props => {
 		login: (type, token) => dispatch({ type, token }),
 		logout: type => dispatch({ type }),
 		loginAfterSignup: (type, account, navigate) =>
-			dispatch({ type, account, navigate })
+			dispatch({ type, account, navigate }),
+    updateProfile: (type => dispatch({ type }))
 	}
 
 	return (

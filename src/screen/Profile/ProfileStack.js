@@ -5,7 +5,7 @@ import ScreenProfile from './ScreenProfile'
 
 const ProfileStack = createStackNavigator()
 
-const ProfileNavigator = ({ navigation }) => {
+const ProfileNavigator = () => {
 	return (
 		<ProfileStack.Navigator>
 			<ProfileStack.Screen

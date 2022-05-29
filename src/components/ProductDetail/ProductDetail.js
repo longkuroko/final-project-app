@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {
 	Image,
-	ScrollView,
 	TouchableOpacity,
 	StyleSheet,
 	Text,
@@ -21,18 +20,29 @@ import ProductCompareList from './ProductCompareList'
 import { API_HOST } from '../../util/API'
 import 'intl'
 import 'intl/locale-data/jsonp/fr'
+import CommentList from "../comment/CommentList";
 
 const { width } = Dimensions.get('window')
 const ProductDetail = ({ navigation, route }) => {
 	const product = route.params
-	const [products, setProducts] = useState([])
 	const [productDetails, setProductDetails] = useState([])
   const relatedProductName = product.productName.slice(0, 15);
+  const [variants, setVariants] = useState([])
+  const [productIndex, setProductIndex] = useState({
+    productId: null,
+    thumbnail: null,
+    name: null,
+    originalUrl: null,
+    description: null,
+    listPrice: null,
+    salePrice: null,
+    color: null
+  })
 
 	const formatCurrency = new Intl.NumberFormat('vi-VN', {
 		style: 'currency',
 		currency: 'VND'
-	}).format(product.price)
+	}).format(productIndex.listPrice)
 
 	useFonts({
 		// eslint-disable-next-line global-require
@@ -50,8 +60,17 @@ const ProductDetail = ({ navigation, route }) => {
 			})
 			.then(res => {
 				if (res && res.data) {
-					console.log(res.data)
-					setProductDetails(res.data.products)
+					setProductDetails(res.data.items)
+          setVariants(res.data.items[0].variants)
+          setProductIndex({
+            thumbnail: res.data.items[0].thumbnail,
+            name: res.data.items[0].name,
+            originalUrl: res.data.items[0].originalUrl,
+            description: res.data.items[0].description,
+            listPrice: res.data.items[0].variants[0].listPrice,
+            color: res.data.items[0].variants[0].variantName,
+            productId: res.data.items[0].productId
+          })
 				}
 			})
 			.catch(err => {
@@ -67,6 +86,15 @@ const ProductDetail = ({ navigation, route }) => {
 			Alert.alert('Can not open this link!')
 		}
 	}
+
+  const updatePriceForProduct = variant => {
+    setProductIndex({
+      ...productIndex,
+      thumbnail: variant.variantImageUrl,
+      listPrice: variant.listPrice,
+      color: variant.variantName
+    })
+  }
 	return (
 		<View style={styles.container}>
 			<StatusBar backgroundColor='#F0F0F3' barStyle='dark-content' />
@@ -86,7 +114,7 @@ const ProductDetail = ({ navigation, route }) => {
 							</View>
 							<View style={styles.imageContainer}>
 								<Image
-									source={{ uri: product.thumbnail }}
+									source={{ uri: productIndex.thumbnail }}
 									style={styles.imageProduct}
 								/>
 							</View>
@@ -94,29 +122,69 @@ const ProductDetail = ({ navigation, route }) => {
 						<View style={styles.productDescription}>
 							<View style={styles.productNameContainer}>
 								<Text style={{ ...styles.productName, fontFamily: 'Nunito' }}>
-									{product.productName}
+									{productIndex.name}
 								</Text>
 								<TouchableOpacity
 									onPress={() => {
-										openUrl(products.productUrl)
+										openUrl(productIndex.originalUrl)
 									}}>
 									<Ionicons name='link-outline' style={styles.linkProduct} />
 								</TouchableOpacity>
 							</View>
 							<Text style={styles.productDescriptionText}>
-								this product is so good dude
+								{productIndex.description}
 							</Text>
 						</View>
+            <View style={{ paddingHorizontal: 16 }}>
+              <Text style={styles.productPriceText}>Màu: {productIndex.color}</Text>
+            </View>
 						<View style={{ paddingHorizontal: 16 }}>
 							<Text style={styles.productPriceText}>{formatCurrency}</Text>
 						</View>
+            <View style={styles.comparingBox}>
+              <Text style={styles.comparingText}>Lựa chọn</Text>
+              <FlatList
+                nestedScrollEnabled
+                horizontal
+                data={variants}
+                bouncesZoom
+                decelerationRate={0}
+                keyExtractor={(_, index) => index.toString()}
+                scrollEventThrottle={16}
+                renderItem={({ item }) => {
+                  return (
+                    <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={() => updatePriceForProduct(item)}>
+                    <View style={styles.variantContainer} >
+                      <View
+                        style={{
+                          height: 100,
+                          alignItems: 'center'
+                        }}>
+                        <Image
+                          source={{ uri: item.variantImageUrl }}
+                          style={{ flex: 1, resizeMode: 'contain', height: 100, width: 150 }}
+                        />
+                      </View>
+                      <Text style={styles.variantNameText}>{item.variantName}</Text>
+                    </View>
+                  </TouchableOpacity>)
+                }}
+              />
+            </View>
 						<View style={styles.comparingBox}>
 							<Text style={styles.comparingText}>So sánh giá</Text>
 							<ProductCompareList
 								data={productDetails}
 								navigation={navigation}
+                variantPrice={formatCurrency}
 							/>
 						</View>
+            <View style={styles.comparingBox}>
+              <Text style={styles.comparingText}>Nhận xét về sản phẩm</Text>
+              <CommentList productId={productIndex.productId} navigation={navigation}/>
+            </View>
 						<View style={styles.comparingBox}>
 							<Text style={styles.comparingText}>Sản phẩm liên quan</Text>
 							<RelatedProductList productName={relatedProductName} navigation={navigation} />
@@ -225,7 +293,34 @@ const styles = StyleSheet.create({
 		marginVertical: 4,
 		marginLeft: 3,
 		justifyContent: 'space-between'
-	}
+	},
+  variantContainer: {
+    margin: 8,
+    width: 120,
+    height: 120,
+    borderRadius: 10,
+    elevation: 20,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.5,
+    shadowRadius: 2,
+    shadowColor: '#333',
+    backgroundColor: '#fff',
+    alignItems: "center"
+  },
+  variantImage: {
+    width: '30%',
+    height: 100,
+    padding: 14,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  variantNameText: {
+    fontSize: 14,
+    maxWidth: '100%',
+    color: '#000000',
+    fontWeight: '600',
+    letterSpacing: 1
+  }
 })
 
 export default ProductDetail

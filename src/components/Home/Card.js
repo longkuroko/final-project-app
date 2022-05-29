@@ -10,10 +10,6 @@ const Card = ({ product, navigation }) => {
 		// eslint-disable-next-line global-require
 		Nunito: require('../../../assets/fonts/Nunito-Black.ttf')
 	})
-	const formatCurrency = new Intl.NumberFormat('vi-VN', {
-		style: 'currency',
-		currency: 'VND'
-	}).format(product.price)
 	return (
 		<TouchableOpacity
 			activeOpacity={0.8}
@@ -35,9 +31,7 @@ const Card = ({ product, navigation }) => {
 						flexDirection: 'row',
 						justifyContent: 'space-between',
 						marginTop: 5
-					}}>
-					<Text style={styles.plantPrice}>{formatCurrency}</Text>
-				</View>
+					}} />
 			</View>
 		</TouchableOpacity>
 	)

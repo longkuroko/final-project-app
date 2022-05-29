@@ -13,7 +13,7 @@ import { useFonts } from 'expo-font'
 import 'intl'
 import 'intl/locale-data/jsonp/fr'
 
-const ProductComparingCard = ({ product, navigation }) => {
+const ProductComparingCard = ({ product, navigation, variantPrice }) => {
 	const openUrl = async url => {
 		const isSupported = await Linking.canOpenURL(url)
 		if (isSupported) {
@@ -26,10 +26,6 @@ const ProductComparingCard = ({ product, navigation }) => {
 		// eslint-disable-next-line global-require
 		Nunito: require('../../../assets/fonts/Nunito-Light.ttf')
 	})
-	const formatCurrency = new Intl.NumberFormat('vi-VN', {
-		style: 'currency',
-		currency: 'VND'
-	}).format(product.salePrice)
 
 	return (
 		<View style={styles.comparingContainer}>
@@ -44,16 +40,16 @@ const ProductComparingCard = ({ product, navigation }) => {
 				</View>
 				<View style={{}}>
 					<Text style={{ ...styles.productNameText, fontFamily: 'Nunito' }}>
-						{product.productName}
+						{product.name}
 					</Text>
 					<View style={styles.productPriceContainer}>
-						<Text style={styles.productPriceText}>{formatCurrency}</Text>
+						<Text style={styles.productPriceText}>{variantPrice}</Text>
 					</View>
 					<View>
 						<Text style={styles.merchant}>Nơi bán: {product.merchant}</Text>
 						<TouchableOpacity
 							onPress={() => {
-								openUrl(product.productUrl)
+								openUrl(product.originalUrl)
 							}}
 							style={styles.linkView}>
 							<Text style={styles.linkProduct}>Truy cập nơi bán</Text>
