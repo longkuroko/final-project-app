@@ -6,13 +6,13 @@ export const USER_ACTION = {
 	LOGIN: 'LOGIN',
 	LOGOUT: 'LOGOUT',
 	REGISTER: 'REGISTER',
-  UPDATE_PROFILE: 'UPDATE_PROFILE'
+	UPDATE_PROFILE: 'UPDATE_PROFILE'
 }
 
 const UserInitialState = {
 	username: null,
 	token: null,
-  updateUpdate: {}
+	updateUpdate: {}
 }
 
 const reducer = (state, action) => {
@@ -24,8 +24,8 @@ const reducer = (state, action) => {
 		case USER_ACTION.LOGOUT:
 			return { ...state, token: null }
 
-    case USER_ACTION.UPDATE_PROFILE:
-      return { ...state, updateUpdate: {} }
+		case USER_ACTION.UPDATE_PROFILE:
+			return { ...state, updateUpdate: {} }
 
 		case USER_ACTION.REGISTER:
 			return { ...state, account: action.account, navigate: action.navigate }
@@ -43,7 +43,7 @@ const AppContext = props => {
 		logout: type => dispatch({ type }),
 		loginAfterSignup: (type, account, navigate) =>
 			dispatch({ type, account, navigate }),
-    updateProfile: (type => dispatch({ type }))
+		updateProfile: type => dispatch({ type })
 	}
 
 	return (

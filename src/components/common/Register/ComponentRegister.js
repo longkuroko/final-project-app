@@ -157,7 +157,7 @@ const ComponentRegister = ({ navigation }) => {
 	return (
 		<View style={styles.container}>
 			<Text style={{ ...styles.title, fontFamily: 'Comfortaa' }}>
-				Go Shopping
+				SSG SHOPPING
 			</Text>
 			<View style={styles.inputView}>
 				<TextInput

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
 	Image,
 	TouchableOpacity,
@@ -9,7 +9,8 @@ import {
 	Dimensions,
 	Linking,
 	Alert,
-	FlatList
+	FlatList,
+	ToastAndroid
 } from 'react-native'
 import Entypo from 'react-native-vector-icons/Entypo'
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -20,24 +21,26 @@ import ProductCompareList from './ProductCompareList'
 import { API_HOST } from '../../util/API'
 import 'intl'
 import 'intl/locale-data/jsonp/fr'
-import CommentList from "../comment/CommentList";
+import CommentList from '../comment/CommentList'
+import { UserContext } from '../../context/UserContext'
 
 const { width } = Dimensions.get('window')
 const ProductDetail = ({ navigation, route }) => {
+	const userCTX = useContext(UserContext)
 	const product = route.params
 	const [productDetails, setProductDetails] = useState([])
-  const relatedProductName = product.productName.slice(0, 15);
-  const [variants, setVariants] = useState([])
-  const [productIndex, setProductIndex] = useState({
-    productId: null,
-    thumbnail: null,
-    name: null,
-    originalUrl: null,
-    description: null,
-    listPrice: null,
-    salePrice: null,
-    color: null
-  })
+	const relatedProductName = product.productName.slice(0, 15)
+	const [variants, setVariants] = useState([])
+	const [productIndex, setProductIndex] = useState({
+		productId: null,
+		thumbnail: null,
+		name: null,
+		originalUrl: null,
+		description: null,
+		listPrice: null,
+		salePrice: null,
+		color: null
+	})
 
 	const formatCurrency = new Intl.NumberFormat('vi-VN', {
 		style: 'currency',
@@ -61,16 +64,16 @@ const ProductDetail = ({ navigation, route }) => {
 			.then(res => {
 				if (res && res.data) {
 					setProductDetails(res.data.items)
-          setVariants(res.data.items[0].variants)
-          setProductIndex({
-            thumbnail: res.data.items[0].thumbnail,
-            name: res.data.items[0].name,
-            originalUrl: res.data.items[0].originalUrl,
-            description: res.data.items[0].description,
-            listPrice: res.data.items[0].variants[0].listPrice,
-            color: res.data.items[0].variants[0].variantName,
-            productId: res.data.items[0].productId
-          })
+					setVariants(res.data.items[0].variants)
+					setProductIndex({
+						thumbnail: res.data.items[0].thumbnail,
+						name: res.data.items[0].name,
+						originalUrl: res.data.items[0].originalUrl,
+						description: res.data.items[0].description,
+						listPrice: res.data.items[0].variants[0].listPrice,
+						color: res.data.items[0].variants[0].variantName,
+						productId: res.data.items[0].productId
+					})
 				}
 			})
 			.catch(err => {
@@ -87,14 +90,41 @@ const ProductDetail = ({ navigation, route }) => {
 		}
 	}
 
-  const updatePriceForProduct = variant => {
-    setProductIndex({
-      ...productIndex,
-      thumbnail: variant.variantImageUrl,
-      listPrice: variant.listPrice,
-      color: variant.variantName
-    })
-  }
+	const saveProductToList = productTemplateId => {
+		const token = JSON.parse(userCTX.state.token)
+		if (token) {
+			axios
+				.post(`${API_HOST}/api/v1/mobile/product/save/${productTemplateId}`, {
+					headers: {
+						'x-private-key': 'MasdhaMASHF@adfn%sad',
+						'x-application-name': 'AFF-APP',
+						Authorization: `Bearer ${token}`
+					}
+				})
+				.then(res => {
+					if (res) {
+						ToastAndroid.show('Đã lưu!', ToastAndroid.SHORT)
+					}
+				})
+				.catch(err => {
+					console.log(err)
+				})
+		} else {
+			ToastAndroid.show(
+				'Cần đăng nhập để thực hiện chức năng này!',
+				ToastAndroid.SHORT
+			)
+		}
+	}
+
+	const updatePriceForProduct = variant => {
+		setProductIndex({
+			...productIndex,
+			thumbnail: variant.variantImageUrl,
+			listPrice: variant.listPrice,
+			color: variant.variantName
+		})
+	}
 	return (
 		<View style={styles.container}>
 			<StatusBar backgroundColor='#F0F0F3' barStyle='dark-content' />
@@ -125,69 +155,83 @@ const ProductDetail = ({ navigation, route }) => {
 									{productIndex.name}
 								</Text>
 								<TouchableOpacity
-									onPress={() => {
-										openUrl(productIndex.originalUrl)
-									}}>
-									<Ionicons name='link-outline' style={styles.linkProduct} />
+									onPress={() => saveProductToList(product.productTemplateId)}>
+									<Ionicons name='heart-outline' style={styles.linkProduct} />
 								</TouchableOpacity>
 							</View>
 							<Text style={styles.productDescriptionText}>
 								{productIndex.description}
 							</Text>
 						</View>
-            <View style={{ paddingHorizontal: 16 }}>
-              <Text style={styles.productPriceText}>Màu: {productIndex.color}</Text>
-            </View>
+						<View style={{ paddingHorizontal: 16 }}>
+							<Text style={styles.productPriceText}>
+								Màu: {productIndex.color}
+							</Text>
+						</View>
 						<View style={{ paddingHorizontal: 16 }}>
 							<Text style={styles.productPriceText}>{formatCurrency}</Text>
 						</View>
-            <View style={styles.comparingBox}>
-              <Text style={styles.comparingText}>Lựa chọn</Text>
-              <FlatList
-                nestedScrollEnabled
-                horizontal
-                data={variants}
-                bouncesZoom
-                decelerationRate={0}
-                keyExtractor={(_, index) => index.toString()}
-                scrollEventThrottle={16}
-                renderItem={({ item }) => {
-                  return (
-                    <TouchableOpacity
-                    activeOpacity={0.8}
-                    onPress={() => updatePriceForProduct(item)}>
-                    <View style={styles.variantContainer} >
-                      <View
-                        style={{
-                          height: 100,
-                          alignItems: 'center'
-                        }}>
-                        <Image
-                          source={{ uri: item.variantImageUrl }}
-                          style={{ flex: 1, resizeMode: 'contain', height: 100, width: 150 }}
-                        />
-                      </View>
-                      <Text style={styles.variantNameText}>{item.variantName}</Text>
-                    </View>
-                  </TouchableOpacity>)
-                }}
-              />
-            </View>
+						<View style={styles.comparingBox}>
+							<Text style={styles.comparingText}>Lựa chọn</Text>
+							<FlatList
+								nestedScrollEnabled
+								horizontal
+								data={variants}
+								bouncesZoom
+								decelerationRate={0}
+								keyExtractor={(_, index) => index.toString()}
+								scrollEventThrottle={16}
+								renderItem={({ item }) => {
+									return (
+										<TouchableOpacity
+											activeOpacity={0.8}
+											onPress={() => updatePriceForProduct(item)}>
+											<View style={styles.variantContainer}>
+												<View
+													style={{
+														height: 100,
+														alignItems: 'center'
+													}}>
+													<Image
+														source={{ uri: item.variantImageUrl }}
+														style={{
+															flex: 1,
+															resizeMode: 'contain',
+															height: 100,
+															width: 150
+														}}
+													/>
+												</View>
+												<Text style={styles.variantNameText}>
+													{item.variantName}
+												</Text>
+											</View>
+										</TouchableOpacity>
+									)
+								}}
+							/>
+						</View>
 						<View style={styles.comparingBox}>
 							<Text style={styles.comparingText}>So sánh giá</Text>
 							<ProductCompareList
 								data={productDetails}
 								navigation={navigation}
-                variantPrice={formatCurrency}
+								variantPrice={formatCurrency}
 							/>
 						</View>
-            <View style={styles.comparingBox}>
-              <Text style={styles.comparingText}>Nhận xét về sản phẩm</Text>
-              <CommentList productId={productIndex.productId} navigation={navigation}/>
-            </View>
+						<View style={styles.comparingBox}>
+							<Text style={styles.comparingText}>Nhận xét về sản phẩm</Text>
+							<CommentList
+								productId={productIndex.productId}
+								navigation={navigation}
+							/>
+						</View>
 						<View style={styles.comparingBox}>
 							<Text style={styles.comparingText}>Sản phẩm liên quan</Text>
-							<RelatedProductList productName={relatedProductName} navigation={navigation} />
+							<RelatedProductList
+								productName={relatedProductName}
+								navigation={navigation}
+							/>
 						</View>
 					</View>
 				)}
@@ -294,33 +338,33 @@ const styles = StyleSheet.create({
 		marginLeft: 3,
 		justifyContent: 'space-between'
 	},
-  variantContainer: {
-    margin: 8,
-    width: 120,
-    height: 120,
-    borderRadius: 10,
-    elevation: 20,
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.5,
-    shadowRadius: 2,
-    shadowColor: '#333',
-    backgroundColor: '#fff',
-    alignItems: "center"
-  },
-  variantImage: {
-    width: '30%',
-    height: 100,
-    padding: 14,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  variantNameText: {
-    fontSize: 14,
-    maxWidth: '100%',
-    color: '#000000',
-    fontWeight: '600',
-    letterSpacing: 1
-  }
+	variantContainer: {
+		margin: 8,
+		width: 120,
+		height: 120,
+		borderRadius: 10,
+		elevation: 20,
+		shadowOffset: { width: 0, height: 1 },
+		shadowOpacity: 0.5,
+		shadowRadius: 2,
+		shadowColor: '#333',
+		backgroundColor: '#fff',
+		alignItems: 'center'
+	},
+	variantImage: {
+		width: '30%',
+		height: 100,
+		padding: 14,
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	variantNameText: {
+		fontSize: 14,
+		maxWidth: '100%',
+		color: '#000000',
+		fontWeight: '600',
+		letterSpacing: 1
+	}
 })
 
 export default ProductDetail

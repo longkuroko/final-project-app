@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import {TextInput, View, Text, Keyboard, ToastAndroid} from 'react-native'
+import { TextInput, View, Text, Keyboard, ToastAndroid } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useFonts } from 'expo-font'
 import axios from 'axios'
@@ -46,13 +46,16 @@ const ComponentLogin = ({ navigation }) => {
 					setNotification({ type: true, message: '', isShow: true })
 					// AsyncStorage.setItem('token', token)
 					userCTX.login(USER_ACTION.LOGIN, token)
-          ToastAndroid.show("Đăng nhập thành công !", ToastAndroid.SHORT);
+					ToastAndroid.show('Đăng nhập thành công !', ToastAndroid.SHORT)
 					navigation.navigate('Home')
 				}
 			})
 			.catch(err => {
 				if (err.response) {
-          ToastAndroid.show("Tài khoản hoặc mật khẩu chưa chính xác !", ToastAndroid.SHORT);
+					ToastAndroid.show(
+						'Tài khoản hoặc mật khẩu chưa chính xác !',
+						ToastAndroid.SHORT
+					)
 					setNotification({
 						type: false,
 						message: 'Tài khoản mật khẩu chưa chính xác',
@@ -73,7 +76,7 @@ const ComponentLogin = ({ navigation }) => {
 	return (
 		<View style={styles.container}>
 			<Text style={{ ...styles.title, fontFamily: 'Comfortaa' }}>
-				Go Shopping
+				SSG SHOPPING
 			</Text>
 			<View style={styles.inputView}>
 				<TextInput

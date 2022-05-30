@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { FlatList } from 'react-native'
 import ProductComparingCard from './productComparingCard'
 
-const ProductCompareList = ({ data, navigation, variantPrice}) => {
+const ProductCompareList = ({ data, navigation, variantPrice }) => {
 	return (
 		<FlatList
 			nestedScrollEnabled
@@ -13,7 +13,13 @@ const ProductCompareList = ({ data, navigation, variantPrice}) => {
 			data={data}
 			keyExtractor={(_, index) => index.toString()}
 			renderItem={({ item }) => {
-				return <ProductComparingCard product={item} navigation={navigation} variantPrice={variantPrice}/>
+				return (
+					<ProductComparingCard
+						product={item}
+						navigation={navigation}
+						variantPrice={variantPrice}
+					/>
+				)
 			}}
 		/>
 	)

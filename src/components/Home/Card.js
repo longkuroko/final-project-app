@@ -31,7 +31,8 @@ const Card = ({ product, navigation }) => {
 						flexDirection: 'row',
 						justifyContent: 'space-between',
 						marginTop: 5
-					}} />
+					}}
+				/>
 			</View>
 		</TouchableOpacity>
 	)

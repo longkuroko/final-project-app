@@ -12,13 +12,13 @@ const ScreenProfile = ({ navigation }) => {
 	const userCTX = useContext(UserContext)
 
 	const [profile, setProfile] = useState({
-    userId: null,
+		userId: null,
 		username: null,
 		email: null,
 		avatar: null,
 		phone: null,
 		fullname: null,
-    imgUrl: null
+		imgUrl: null
 	})
 
 	useEffect(() => {
@@ -41,8 +41,8 @@ const ScreenProfile = ({ navigation }) => {
 						email: response.data.email,
 						phone: response.data.phoneNumber,
 						fullname: response.data.fullname,
-            imgUrl: response.data.imgUrl,
-            userId: response.data.userId
+						imgUrl: response.data.imgUrl,
+						userId: response.data.userId
 					})
 				}
 			})
@@ -62,10 +62,7 @@ const ScreenProfile = ({ navigation }) => {
 		<SafeAreaView style={styles.container}>
 			<View style={styles.userInfoSection}>
 				<View style={{ flexDirection: 'row', marginTop: 15 }}>
-					<Avatar.Image
-						source={{uri: profile.imgUrl }}
-						size={80}
-					/>
+					<Avatar.Image source={{ uri: profile.imgUrl }} size={80} />
 					<View style={{ marginLeft: 20 }}>
 						<Title style={[styles.title, { marginTop: 15, marginBottom: 5 }]}>
 							{profile.fullName}
@@ -97,37 +94,37 @@ const ScreenProfile = ({ navigation }) => {
 			</View>
 
 			<View style={styles.menuWrapper}>
-        <TouchableRipple onPress={() => {}}>
-          <View style={styles.menuItem}>
-            <Icon name='heart-outline' color='#2980B9' size={25} />
-            <Text style={styles.menuItemText}>Your Favorites</Text>
-          </View>
-        </TouchableRipple>
-        <TouchableRipple
-          onPress={() => {
-            navigation.navigate('EditProfile')
-          }}>
-          <View style={styles.menuItem}>
-            <Icon name='account-edit' color='#2980B9' size={25} />
-            <Text style={styles.menuItemText}>Chỉnh sửa thông tin</Text>
-          </View>
-        </TouchableRipple>
-        <TouchableRipple onPress={() => {}}>
-          <View style={styles.menuItem}>
-            <Icons name='settings' color='#2980B9' size={25} />
-            <Text style={styles.menuItemText}>Cài đặt</Text>
-          </View>
-        </TouchableRipple>
-        <TouchableRipple
-          onPress={() => {
-            navigation.navigate('Home')
-            userCTX.logout(USER_ACTION.LOGOUT)
-          }}>
-          <View style={styles.menuItem}>
-            <Icon name='logout' color='#2980B9' size={25} />
-            <Text style={styles.menuItemText}>Đăng xuất</Text>
-          </View>
-        </TouchableRipple>
+				<TouchableRipple onPress={() => {}}>
+					<View style={styles.menuItem}>
+						<Icon name='heart-outline' color='#2980B9' size={25} />
+						<Text style={styles.menuItemText}>Your Favorites</Text>
+					</View>
+				</TouchableRipple>
+				<TouchableRipple
+					onPress={() => {
+						navigation.navigate('EditProfile')
+					}}>
+					<View style={styles.menuItem}>
+						<Icon name='account-edit' color='#2980B9' size={25} />
+						<Text style={styles.menuItemText}>Chỉnh sửa thông tin</Text>
+					</View>
+				</TouchableRipple>
+				<TouchableRipple onPress={() => {}}>
+					<View style={styles.menuItem}>
+						<Icons name='settings' color='#2980B9' size={25} />
+						<Text style={styles.menuItemText}>Cài đặt</Text>
+					</View>
+				</TouchableRipple>
+				<TouchableRipple
+					onPress={() => {
+						navigation.navigate('Home')
+						userCTX.logout(USER_ACTION.LOGOUT)
+					}}>
+					<View style={styles.menuItem}>
+						<Icon name='logout' color='#2980B9' size={25} />
+						<Text style={styles.menuItemText}>Đăng xuất</Text>
+					</View>
+				</TouchableRipple>
 			</View>
 		</SafeAreaView>
 	)
