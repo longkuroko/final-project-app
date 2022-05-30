@@ -8,12 +8,15 @@ const RelatedProductList = ({ productName, navigation }) => {
 	const [relativeProducts, setRelativeProduct] = useState([])
 	useEffect(() => {
 		axios
-			.get(`${API_HOST}/api/v1/mobile/product?page=${1}&page_size=${8}&search=${productName}`, {
-				headers: {
-					'x-private-key': 'MasdhaMASHF@adfn%sad',
-					'x-application-name': 'AFF-APP'
+			.get(
+				`${API_HOST}/api/v1/mobile/product?page=${1}&page_size=${8}&search=${productName}`,
+				{
+					headers: {
+						'x-private-key': 'MasdhaMASHF@adfn%sad',
+						'x-application-name': 'AFF-APP'
+					}
 				}
-			})
+			)
 			.then(res => {
 				if (res && res.data.data) {
 					// eslint-disable-next-line no-param-reassign

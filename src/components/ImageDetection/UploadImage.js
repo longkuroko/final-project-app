@@ -7,7 +7,7 @@ const UploadImage = ({ navigation }) => {
 	const [image, setImage] = useState(null)
 
 	useEffect(() => {
-		(async () => {
+		;(async () => {
 			const galleryStatus =
 				await ImagePicker.requestMediaLibraryPermissionsAsync()
 			setHasGallaryPermission(galleryStatus.status === 'granted')

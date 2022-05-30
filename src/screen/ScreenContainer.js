@@ -12,6 +12,7 @@ import MyComponent from './Search/SearchingScreen'
 import ProductDetail from '../components/ProductDetail/ProductDetail'
 import EditProfile from '../components/Profile/EditProfile'
 import ProfileNavigator from './Profile/ProfileStack'
+import ProductLikeList from '../components/ProductLike/ProductLikeList'
 
 const Drawer = createDrawerNavigator()
 
@@ -139,6 +140,20 @@ const MainScreen = () => {
 				}}
 			/>
 			<Drawer.Screen
+				name='ProductLikeList'
+				component={ProductLikeList}
+				options={{
+					title: 'Danh sách sản phẩm đã lưu',
+					headerTitleAlign: 'center',
+					drawerIcon: () => (
+						<Image
+							style={{ width: 20, height: 20 }}
+							source={require('../../assets/save-instagram.png')}
+						/>
+					)
+				}}
+			/>
+			<Drawer.Screen
 				name='ScreenUploadImage'
 				component={ScreenUploadImage}
 				options={{
@@ -184,15 +199,15 @@ const MainScreen = () => {
 					headerTitleAlign: 'center'
 				}}
 			/>
-      <Drawer.Screen
-        name='Detail'
-        component={ProductDetail}
-        options={{
-          title: 'Chi tiết sản phẩm',
-          drawerItemStyle: { height: 0 },
-          headerTitleAlign: 'center'
-        }}
-      />
+			<Drawer.Screen
+				name='Detail'
+				component={ProductDetail}
+				options={{
+					title: 'Chi tiết sản phẩm',
+					drawerItemStyle: { height: 0 },
+					headerTitleAlign: 'center'
+				}}
+			/>
 		</Drawer.Navigator>
 	)
 }

@@ -9,7 +9,7 @@ import {
 import axios from 'axios'
 import { API_HOST } from '../../util/API'
 
-const Category = ({category, navigation} ) => (
+const Category = ({ category, navigation }) => (
 	<View style={styles.categoryContainer}>
 		<TouchableOpacity activeOpacity={0.8}>
 			<Text style={styles.categoryText}>{category.title}</Text>
@@ -38,8 +38,8 @@ const CategoryList = () => {
 	})
 	return (
 		<FlatList
-      horizontal
-      data={categories}
+			horizontal
+			data={categories}
 			keyExtractor={(_, index) => index.toString()}
 			renderItem={({ item }) => {
 				return <Category category={item} />
