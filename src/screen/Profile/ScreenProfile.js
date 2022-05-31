@@ -94,10 +94,10 @@ const ScreenProfile = ({ navigation }) => {
 			</View>
 
 			<View style={styles.menuWrapper}>
-				<TouchableRipple onPress={() => {}}>
+				<TouchableRipple onPress={() => navigation.navigate('ProductLikeList')}>
 					<View style={styles.menuItem}>
 						<Icon name='heart-outline' color='#2980B9' size={25} />
-						<Text style={styles.menuItemText}>Your Favorites</Text>
+						<Text style={styles.menuItemText}>Danh sách yêu thích</Text>
 					</View>
 				</TouchableRipple>
 				<TouchableRipple

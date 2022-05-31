@@ -1,18 +1,39 @@
 import React, {useContext, useEffect, useState} from 'react'
 import axios from "axios";
-import {FlatList, SafeAreaView, Text, TouchableOpacity, View} from "react-native";
+import {FlatList, SafeAreaView, Text, View, StyleSheet} from "react-native";
 import {API_HOST} from "../../util/API";
 import {UserContext} from "../../context/UserContext";
-import {styles} from "../../screen/Home/ScreenHome.style";
-import Card from "../Home/Card";
-import Searching from "../Home/Searching";
+import ProductFavouriteCard from "./ProductFavouriteCard";
 
 const ProductLikeList = ({ navigation }) => {
   const userCTX = useContext(UserContext)
-  const [products, setProducts] = useState([])
+  const [favouriteProducts, setFavouriteProducts] = useState([])
   const token = JSON.parse(userCTX.state.token)
 
-  const getProductLike = () => {
+  // useEffect(() => {
+  //   axios
+  //     .get(
+  //       `${API_HOST}/api/v1/mobile/product?page=${1}&page_size=${8}`,
+  //       {
+  //         headers: {
+  //           'x-private-key': 'MasdhaMASHF@adfn%sad',
+  //           'x-application-name': 'AFF-APP'
+  //         }
+  //       }
+  //     )
+  //     .then(res => {
+  //       if (res && res.data.data) {
+  //         // eslint-disable-next-line no-param-reassign
+  //         console.log(res.data.data)
+  //         setFavouriteProducts(res.data.data)
+  //       }
+  //     })
+  //     .catch(err => {
+  //       console.log(err)
+  //     })
+  // }, [])
+
+  useEffect(() => {
     axios.get(
       `${API_HOST}/api/v1/mobile/user/save-product`,
       {
@@ -24,46 +45,57 @@ const ProductLikeList = ({ navigation }) => {
       }
     ).then(res => {
       if (res && res.data ) {
-        console.log(res.data);
-        setProducts(res.data)
+        console.log(res.data)
+        setFavouriteProducts(res.data)
       }
     }).catch(err => {
       console.log(err)
     })
-  }
-
-  useEffect(() => {
-    getProductLike()
-  }, [])
+  }, [token])
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <View>
           <Text style={{ ...styles.title1, fontFamily: 'Montserrat' }}>
-            Welcome to
-          </Text>
-          <Text style={{ ...styles.title2, fontFamily: 'Montserrat' }}>
-            SSG SHOPPING
+           Danh sách của bạn
           </Text>
         </View>
       </View>
-      <Searching navigation={navigation} isHomeScreen />
       <FlatList
-        columnWrapperStyle={{ justifyContent: 'space-between' }}
         contentContainerStyle={{
           marginTop: 10,
           paddingBottom: 50
         }}
-        numColumns={2}
-        data={products}
+        data={favouriteProducts}
         keyExtractor={(_, index) => index.toString()}
         renderItem={({ item }) => {
-          return <Card product={item} navigation={navigation} />
+          return (
+            <ProductFavouriteCard
+              product={item}
+              navigation={navigation}
+            />
+          )
         }}
       />
     </SafeAreaView>
   )
 }
-
+const styles = StyleSheet.create({
+  container: {
+    flex:1,
+    paddingHorizontal: 20,
+    backgroundColor: '#fff'
+  },
+  header: {
+    marginTop: 30,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  title1: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    color: '#0AA1DD'
+  }
+})
 export default ProductLikeList;

@@ -1,18 +1,15 @@
-import React, { useState, ReactNode, useContext } from 'react'
+import React, { useContext } from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import { Image } from 'react-native'
 import ScreenHome from './Home/ScreenHome'
 import ScreenLogin from './Login/ScreenLogin'
 import ScreenRegister from './Login/ScreenRegister'
-import ScreenProfile from './Profile/ScreenProfile'
 import { UserContext } from '../context/UserContext'
-import ScreenUploadImage from './ImageDetection/ScreenUploadImage'
 import FeedNavigation from './Feed/FeedNavigation'
 import MyComponent from './Search/SearchingScreen'
 import ProductDetail from '../components/ProductDetail/ProductDetail'
-import EditProfile from '../components/Profile/EditProfile'
 import ProfileNavigator from './Profile/ProfileStack'
-import ProductLikeList from '../components/ProductLike/ProductLikeList'
+import Favourite from "./Favourite/Favourite";
 
 const Drawer = createDrawerNavigator()
 
@@ -46,20 +43,6 @@ const MainScreen = () => {
 							<Image
 								style={{ width: 20, height: 20 }}
 								source={require('../../assets/news.png')}
-							/>
-						)
-					}}
-				/>
-				<Drawer.Screen
-					name='ScreenUploadImage'
-					component={ScreenUploadImage}
-					options={{
-						title: 'Tìm kiếm bằng hình ảnh',
-						headerTitleAlign: 'center',
-						drawerIcon: () => (
-							<Image
-								style={{ width: 20, height: 20 }}
-								source={require('../../assets/image.png')}
 							/>
 						)
 					}}
@@ -141,7 +124,7 @@ const MainScreen = () => {
 			/>
 			<Drawer.Screen
 				name='ProductLikeList'
-				component={ProductLikeList}
+				component={Favourite}
 				options={{
 					title: 'Danh sách sản phẩm đã lưu',
 					headerTitleAlign: 'center',
@@ -149,20 +132,6 @@ const MainScreen = () => {
 						<Image
 							style={{ width: 20, height: 20 }}
 							source={require('../../assets/save-instagram.png')}
-						/>
-					)
-				}}
-			/>
-			<Drawer.Screen
-				name='ScreenUploadImage'
-				component={ScreenUploadImage}
-				options={{
-					title: 'Tìm kiếm bằng hình ảnh',
-					headerTitleAlign: 'center',
-					drawerIcon: () => (
-						<Image
-							style={{ width: 20, height: 20 }}
-							source={require('../../assets/image.png')}
 						/>
 					)
 				}}
