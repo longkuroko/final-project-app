@@ -25,7 +25,7 @@ export const styles = StyleSheet.create({
 		marginLeft: 20
 	},
 	card: {
-		height: 225,
+		height: 200,
 		backgroundColor: '#F1F1F1',
 		marginHorizontal: 2,
 		width,
@@ -120,8 +120,7 @@ export const styles = StyleSheet.create({
 		justifyContent: 'space-between'
 	},
 	activeCategoryListText: {
-		borderBottomWidth: 1,
-		paddingBottom: 5
+    fontSize: 15,
 	},
 	viewMoreBtn: {
 		alignItems: 'center',

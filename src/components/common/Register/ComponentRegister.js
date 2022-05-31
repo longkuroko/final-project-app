@@ -256,7 +256,11 @@ const ComponentRegister = ({ navigation }) => {
 			<TouchableOpacity
 				style={styles.registerBtn}
 				onPress={() => handleRegister(account)}>
-				<Text>Register</Text>
+				<Text style={{
+          color: '#fff',
+          fontSize: 18,
+          fontWeight: 'bold'
+        }}>Đăng ký</Text>
 			</TouchableOpacity>
 			{/* eslint-disable-next-line no-nested-ternary */}
 			{Notifice.isShow ? (

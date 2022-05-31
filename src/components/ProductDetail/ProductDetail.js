@@ -39,8 +39,10 @@ const ProductDetail = ({ navigation, route }) => {
 		description: null,
 		listPrice: null,
 		salePrice: null,
-		color: null
+		color: null,
 	})
+
+  const token = JSON.parse(userCTX.state.token)
 
 	const formatCurrency = new Intl.NumberFormat('vi-VN', {
 		style: 'currency',
@@ -81,17 +83,9 @@ const ProductDetail = ({ navigation, route }) => {
 			})
 	}, [product.productTemplateId])
 
-	const openUrl = async url => {
-		const isSupported = await Linking.canOpenURL(url)
-		if (isSupported) {
-			await Linking.openURL(url)
-		} else {
-			Alert.alert('Can not open this link!')
-		}
-	}
-
 	const saveProductToList = productTemplateId => {
-		const token = JSON.parse(userCTX.state.token)
+    console.log(product.productTemplateId)
+    console.log(token)
 		if (token) {
 			axios
 				.post(`${API_HOST}/api/v1/mobile/product/save/${productTemplateId}`, {

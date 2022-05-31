@@ -43,7 +43,7 @@ export const styles = StyleSheet.create({
 	},
 
 	registerBtn: {
-		width: 200,
+		width: 300,
 		borderRadius: 10,
 		height: 50,
 		alignItems: 'center',
