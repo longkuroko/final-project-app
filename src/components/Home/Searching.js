@@ -20,7 +20,7 @@ const { width } = Dimensions.get('window')
 const Searching = ({ navigation, isHomeScreen }) => {
 	const [textSearch, setTextSearch] = useState('')
 	const [products, setProducts] = useState([])
-	const [texDebouncedText] = useDebounce(textSearch, 1000)
+	const [texDebouncedText] = useDebounce(textSearch, 500)
 	const [loadingMore, setLoadingMore] = useState(false)
 	const [nextPage, setNextPage] = useState(1)
 

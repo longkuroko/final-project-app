@@ -30,8 +30,8 @@ const CommentList = ({ productId, navigation }) => {
 		<FlatList
 			nestedScrollEnabled
 			contentContainerStyle={{
-				marginTop: 10,
-				paddingBottom: 50
+        padding: 20,
+				marginTop: 10
 			}}
 			data={comments}
 			keyExtractor={(_, index) => index.toString()}

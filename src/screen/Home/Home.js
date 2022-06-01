@@ -109,14 +109,14 @@ const Home = ({ navigation }) => {
               handleSearchByCategory(item.categoryId)
             }}>
             <View>
-              <Text style={{...styles.activeCategoryListText, color: selectedCategoryIndex === index ? '#42C2FF' : '#B7CADB'}}>
+              <Text style={{...styles.activeCategoryListText, color: selectedCategoryIndex === index ? '#001D6E' : '#B7CADB'}}>
                 {item.title}
               </Text>
               {selectedCategoryIndex === index && (
                 <View style={{
                   height: 3,
                   width: '100%',
-                  backgroundColor: '#42C2FF',
+                  backgroundColor: '#001D6E',
                   marginTop: 2,
                 }} />
               )}
