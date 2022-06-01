@@ -46,12 +46,12 @@ const ProductLikeList = ({ navigation }) => {
     ).then(res => {
       if (res && res.data ) {
         console.log(res.data)
-        setFavouriteProducts(res.data)
+        setFavouriteProducts(res.data.data)
       }
     }).catch(err => {
       console.log(err)
     })
-  }, [token])
+  }, [])
 
   return (
     <SafeAreaView style={styles.container}>

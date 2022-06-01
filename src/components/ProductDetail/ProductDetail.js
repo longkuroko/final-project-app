@@ -7,8 +7,6 @@ import {
 	View,
 	StatusBar,
 	Dimensions,
-	Linking,
-	Alert,
 	FlatList,
 	ToastAndroid
 } from 'react-native'
@@ -31,6 +29,8 @@ const ProductDetail = ({ navigation, route }) => {
 	const [productDetails, setProductDetails] = useState([])
 	const relatedProductName = product.productName.slice(0, 15)
 	const [variants, setVariants] = useState([])
+  const [selectedVariant, setSelectedVariant] = useState(0);
+  const [isLike, setIsLike] = useState(false);
 	const [productIndex, setProductIndex] = useState({
 		productId: null,
 		thumbnail: null,
@@ -84,20 +84,20 @@ const ProductDetail = ({ navigation, route }) => {
 	}, [product.productTemplateId])
 
 	const saveProductToList = productTemplateId => {
-    console.log(product.productTemplateId)
-    console.log(token)
 		if (token) {
 			axios
-				.post(`${API_HOST}/api/v1/mobile/product/save/${productTemplateId}`, {
-					headers: {
-						'x-private-key': 'MasdhaMASHF@adfn%sad',
-						'x-application-name': 'AFF-APP',
-						Authorization: `Bearer ${token}`
-					}
-				})
+				.post(`${API_HOST}/api/v1/mobile/product/save/765`,
+          {
+            headers: {
+              'x-private-key': 'MasdhaMASHF@adfn%sad',
+              'x-application-name': 'AFF-APP',
+              Authorization: `Bearer ${token}`
+            }
+          })
 				.then(res => {
-					if (res) {
+					if (res && res.data.status === 200) {
 						ToastAndroid.show('Đã lưu!', ToastAndroid.SHORT)
+            setIsLike(true)
 					}
 				})
 				.catch(err => {
@@ -150,7 +150,8 @@ const ProductDetail = ({ navigation, route }) => {
 								</Text>
 								<TouchableOpacity
 									onPress={() => saveProductToList(product.productTemplateId)}>
-									<Ionicons name='heart-outline' style={styles.linkProduct} />
+									<Ionicons name='heart-outline' style={{...styles.linkProduct, color: isLike ? '#FF005C' : '#000000',
+                  backgroundColor : isLike ? '#FF8C8C' : '#fff'}}/>
 								</TouchableOpacity>
 							</View>
 							<Text style={styles.productDescriptionText}>
@@ -158,7 +159,7 @@ const ProductDetail = ({ navigation, route }) => {
 							</Text>
 						</View>
 						<View style={{ paddingHorizontal: 16 }}>
-							<Text style={styles.productPriceText}>
+							<Text style={styles.productOptionText}>
 								Màu: {productIndex.color}
 							</Text>
 						</View>
@@ -167,43 +168,41 @@ const ProductDetail = ({ navigation, route }) => {
 						</View>
 						<View style={styles.comparingBox}>
 							<Text style={styles.comparingText}>Lựa chọn</Text>
-							<FlatList
-								nestedScrollEnabled
-								horizontal
-								data={variants}
-								bouncesZoom
-								decelerationRate={0}
-								keyExtractor={(_, index) => index.toString()}
-								scrollEventThrottle={16}
-								renderItem={({ item }) => {
-									return (
-										<TouchableOpacity
-											activeOpacity={0.8}
-											onPress={() => updatePriceForProduct(item)}>
-											<View style={styles.variantContainer}>
-												<View
-													style={{
-														height: 100,
-														alignItems: 'center'
-													}}>
-													<Image
-														source={{ uri: item.variantImageUrl }}
-														style={{
-															flex: 1,
-															resizeMode: 'contain',
-															height: 100,
-															width: 150
-														}}
-													/>
-												</View>
-												<Text style={styles.variantNameText}>
-													{item.variantName}
-												</Text>
-											</View>
-										</TouchableOpacity>
-									)
-								}}
-							/>
+              <View style={{ flexDirection: 'row'}}>
+                {
+                  variants.map((item, index) => (
+                    <TouchableOpacity
+                      key={index}
+                      activeOpacity={0.8}
+                      onPress={() => {
+                        setSelectedVariant(index)
+                        updatePriceForProduct(item)
+                      }}
+                    style={{ borderWidth: 2,	borderRadius: 10, borderColor: selectedVariant === index ? '#233E8B' : '#fff',}}>
+                      <View style={styles.variantContainer}>
+                        <View
+                          style={{
+                            height: 100,
+                            alignItems: 'center'
+                          }}>
+                          <Image
+                            source={{ uri: item.variantImageUrl !== null || item.variantImageUrl === '' ? item.variantImageUrl : product.thumbnail }}
+                            style={{
+                              flex: 1,
+                              resizeMode: 'contain',
+                              height: 100,
+                              width: 150
+                            }}
+                          />
+                        </View>
+                        <Text style={styles.variantNameText}>
+                          {item.variantName}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  ))
+                }
+              </View>
 						</View>
 						<View style={styles.comparingBox}>
 							<Text style={styles.comparingText}>So sánh giá</Text>
@@ -278,7 +277,7 @@ const styles = StyleSheet.create({
 	},
 	productDescription: {
 		paddingHorizontal: 16,
-		marginTop: 6
+		marginTop: 6,
 	},
 	productNameContainer: {
 		flexDirection: 'row',
@@ -296,30 +295,34 @@ const styles = StyleSheet.create({
 	},
 	linkProduct: {
 		fontSize: 24,
-		color: '#0043F9',
-		backgroundColor: `#0043F9${10}`,
 		padding: 8,
 		borderRadius: 100
 	},
 	productDescriptionText: {
-		fontSize: 12,
+		fontSize: 15,
 		color: '#000000',
-		fontWeight: '400',
+		fontWeight: '500',
 		letterSpacing: 1,
 		opacity: 0.5,
-		lineHeight: 20,
-		maxWidth: '85%',
-		maxHeight: 44,
-		marginBottom: 18
+		marginBottom: 14,
+    position: "relative"
 	},
 	productPriceText: {
 		fontSize: 18,
-		fontWeight: '500',
+		fontWeight: '700',
 		maxWidth: '85%',
-		color: '#000000',
+		color: '#DD2C00',
 		marginBottom: 4
 	},
+  productOptionText: {
+    fontSize: 18,
+    fontWeight: '500',
+    maxWidth: '85%',
+    color: '#000000',
+    marginBottom: 4
+  },
 	comparingText: {
+    flexDirection: 'row',
 		fontSize: 20,
 		fontWeight: 'bold',
 		letterSpacing: 0.5,
@@ -335,8 +338,8 @@ const styles = StyleSheet.create({
 	variantContainer: {
 		margin: 8,
 		width: 120,
+    borderRadius: 10,
 		height: 120,
-		borderRadius: 10,
 		elevation: 20,
 		shadowOffset: { width: 0, height: 1 },
 		shadowOpacity: 0.5,
