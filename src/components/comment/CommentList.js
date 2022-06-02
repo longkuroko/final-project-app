@@ -30,7 +30,7 @@ const CommentList = ({ productId, navigation }) => {
 		<FlatList
 			nestedScrollEnabled
 			contentContainerStyle={{
-        padding: 20,
+				padding: 20,
 				marginTop: 10
 			}}
 			data={comments}

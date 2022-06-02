@@ -1,9 +1,8 @@
 import React from 'react'
-import ProductLikeList from "../../components/ProductLike/ProductLikeList";
+import ProductLikeList from '../../components/ProductLike/ProductLikeList'
 
 const Favourite = ({ navigation }) => {
-  return <ProductLikeList navigation={navigation} />
+	return <ProductLikeList navigation={navigation} />
 }
 
-export default Favourite;
-
+export default Favourite

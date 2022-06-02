@@ -95,6 +95,7 @@
     "react-native-vector-icons": "^9.1.0",
     "react-native-web": "0.17.1",
     "reanimated-bottom-sheet": "^1.0.0-alpha.22",
+    "rn-read-more": "^1.0.5",
     "use-debounce": "^8.0.1"
   },
   "devDependencies": {

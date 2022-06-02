@@ -120,7 +120,7 @@ export const styles = StyleSheet.create({
 		justifyContent: 'space-between'
 	},
 	activeCategoryListText: {
-    fontSize: 15,
+		fontSize: 15
 	},
 	viewMoreBtn: {
 		alignItems: 'center',
