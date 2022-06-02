@@ -9,7 +9,7 @@ import FeedNavigation from './Feed/FeedNavigation'
 import MyComponent from './Search/SearchingScreen'
 import ProductDetail from '../components/ProductDetail/ProductDetail'
 import ProfileNavigator from './Profile/ProfileStack'
-import Favourite from "./Favourite/Favourite";
+import Favourite from './Favourite/Favourite'
 
 const Drawer = createDrawerNavigator()
 

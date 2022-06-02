@@ -1,5 +1,12 @@
 import React, { useContext } from 'react'
-import { Text, View, Image, StyleSheet, TouchableOpacity } from 'react-native'
+import {
+	Text,
+	View,
+	Image,
+	StyleSheet,
+	TouchableOpacity,
+	ToastAndroid
+} from 'react-native'
 import MaterialIcon from 'react-native-vector-icons/AntDesign'
 import FeedCard from './FeedCard'
 import { UserContext } from '../../context/UserContext'
@@ -9,15 +16,19 @@ const Feed = ({ navigation }) => {
 	const { token } = userCTX.state
 	const checkIsLogin = () => {
 		if (token === null) {
-			return <Text>Bạn cần đăng nhập để thực hiện chức năng này</Text>
+			ToastAndroid.show(
+				'Bạn cần đăng nhập để thực chức năng này!',
+				ToastAndroid.SHORT
+			)
+		} else {
+			navigation.navigate('CreateFeed')
 		}
-		return () => navigation.navigate('CreateFeed')
 	}
 	return (
 		<View style={styles.container}>
 			<FeedCard />
 			<TouchableOpacity
-				onPress={() => navigation.navigate('CreateFeed')}
+				onPress={() => checkIsLogin()}
 				style={{
 					position: 'absolute',
 					right: 60,

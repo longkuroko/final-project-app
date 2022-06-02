@@ -21,7 +21,7 @@ const Home = ({ navigation }) => {
 	const [nextPage, setNextPage] = useState(1)
 	const [categories, setCategories] = useState([])
 	const [currentCategory, setCurrentCategory] = useState(6)
-  const [selectedCategoryIndex, setSelectedCategoryIndex] = useState(0);
+	const [selectedCategoryIndex, setSelectedCategoryIndex] = useState(0)
 
 	const handleSearchByCategory = item => {
 		setCurrentCategory(item)
@@ -45,8 +45,6 @@ const Home = ({ navigation }) => {
 			})
 	}
 
-
-
 	const getProductPaging = async (page, size, categoryId) => {
 		const { data } = await axios.get(
 			`${API_HOST}/api/v1/mobile/product?page=${page}&page_size=${size}&categoryId=${categoryId}`,
@@ -60,16 +58,18 @@ const Home = ({ navigation }) => {
 		setProducts([...products, ...data.data])
 	}
 
-  const getProductByCategory = async (page, size, categoryId) => {
-    const {data} = await axios.get(`${API_HOST}/api/v1/mobile/product?page=${page}&page_size=${size}&categoryId=${categoryId}`,
-      {
-        headers: {
-          'x-private-key': 'MasdhaMASHF@adfn%sad',
-          'x-application-name': 'AFF-APP'
-        }
-      })
-    setProducts(data.data)
-  }
+	const getProductByCategory = async (page, size, categoryId) => {
+		const { data } = await axios.get(
+			`${API_HOST}/api/v1/mobile/product?page=${page}&page_size=${size}&categoryId=${categoryId}`,
+			{
+				headers: {
+					'x-private-key': 'MasdhaMASHF@adfn%sad',
+					'x-application-name': 'AFF-APP'
+				}
+			}
+		)
+		setProducts(data.data)
+	}
 
 	useEffect(() => {
 		getProductPaging(1, 12, currentCategory)
@@ -98,54 +98,58 @@ const Home = ({ navigation }) => {
 			</View>
 			<Searching navigation={navigation} isHomeScreen />
 			<View style={styles.categoryListContainer}>
-        {
-          categories.map((item, index) => (
-            <TouchableOpacity
-            key={index}
-            activeOpacity={0.8}
-            onPress={() => {
-              setSelectedCategoryIndex(index)
-              getProductByCategory(1, 12, item.categoryId)
-              handleSearchByCategory(item.categoryId)
-            }}>
-            <View>
-              <Text style={{...styles.activeCategoryListText, color: selectedCategoryIndex === index ? '#001D6E' : '#B7CADB'}}>
-                {item.title}
-              </Text>
-              {selectedCategoryIndex === index && (
-                <View style={{
-                  height: 3,
-                  width: '100%',
-                  backgroundColor: '#001D6E',
-                  marginTop: 2,
-                }} />
-              )}
-            </View>
-            </TouchableOpacity>
-          ))
-        }
+				{categories.map((item, index) => (
+					<TouchableOpacity
+						key={index}
+						activeOpacity={0.8}
+						onPress={() => {
+							setSelectedCategoryIndex(index)
+							getProductByCategory(1, 12, item.categoryId)
+							handleSearchByCategory(item.categoryId)
+						}}>
+						<View>
+							<Text
+								style={{
+									...styles.activeCategoryListText,
+									color: selectedCategoryIndex === index ? '#001D6E' : '#242F9B'
+								}}>
+								{item.title}
+							</Text>
+							{selectedCategoryIndex === index && (
+								<View
+									style={{
+										height: 3,
+										width: '100%',
+										backgroundColor: '#001D6E',
+										marginTop: 2
+									}}
+								/>
+							)}
+						</View>
+					</TouchableOpacity>
+				))}
 			</View>
-      <FlatList
-        columnWrapperStyle={{ justifyContent: 'space-between' }}
-        contentContainerStyle={{
-          marginTop: 10,
-          paddingBottom: 50
-        }}
-        numColumns={2}
-        data={products}
-        keyExtractor={(_, index) => index.toString()}
-        renderItem={({ item }) => {
-          return <Card product={item} navigation={navigation} />
-        }}
-      />
-      <TouchableOpacity
-        style={styles.viewMoreBtn}
-        onPress={() => {
-          getProductPaging(nextPage + 1, 12, currentCategory)
-          setNextPage(prevPage => prevPage + 1)
-        }}>
-        <Text>View more</Text>
-      </TouchableOpacity>
+			<FlatList
+				columnWrapperStyle={{ justifyContent: 'space-between' }}
+				contentContainerStyle={{
+					marginTop: 10,
+					paddingBottom: 50
+				}}
+				numColumns={2}
+				data={products}
+				keyExtractor={(_, index) => index.toString()}
+				renderItem={({ item }) => {
+					return <Card product={item} navigation={navigation} />
+				}}
+			/>
+			<TouchableOpacity
+				style={styles.viewMoreBtn}
+				onPress={() => {
+					getProductPaging(nextPage + 1, 12, currentCategory)
+					setNextPage(prevPage => prevPage + 1)
+				}}>
+				<Text>View more</Text>
+			</TouchableOpacity>
 		</SafeAreaView>
 	)
 }

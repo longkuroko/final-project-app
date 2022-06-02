@@ -108,11 +108,14 @@ const ComponentLogin = ({ navigation }) => {
 			</TouchableOpacity>
 
 			<TouchableOpacity style={styles.loginBtn} onPress={() => login(account)}>
-				<Text style={{
-          color: '#fff',
-          fontSize: 18,
-          fontWeight: 'bold'
-        }}>Đăng nhập</Text>
+				<Text
+					style={{
+						color: '#fff',
+						fontSize: 18,
+						fontWeight: 'bold'
+					}}>
+					Đăng nhập
+				</Text>
 			</TouchableOpacity>
 		</View>
 	)
