@@ -1,49 +1,50 @@
 import React from 'react'
 import { Text, View, Image, StyleSheet, TouchableOpacity } from 'react-native'
-import MaterialIcon from 'react-native-vector-icons/AntDesign'
 
-const FeedCard = () => {
+const FeedCard = ({ post, navigation }) => {
 	return (
-		<View style={styles.container}>
-			<View style={styles.cardContainer}>
-				<Image
-					source={{
-						uri: 'https://organicthemes.com/demo/profile/files/2018/05/profile-pic.jpg'
-					}}
-					style={{ height: 50, width: 50, borderRadius: 50 }}
-				/>
-				<View style={{ marginLeft: 10 }}>
-					<Text style={{ fontSize: 20 }}>Long Nguyen</Text>
-					<View style={{ flexDirection: 'row' }}>
-						<Text style={{ fontSize: 12 }}>14/09</Text>
-						<Text style={{ fontSize: 12, marginLeft: 5 }}> 3:00</Text>
-					</View>
-				</View>
-			</View>
+    <TouchableOpacity onPress={() => navigation.navigate('FeedDetail', post)}>
+      <View style={styles.container}>
+        <View style={styles.cardContainer}>
+          <Image
+            source={{
+              uri: 'https://organicthemes.com/demo/profile/files/2018/05/profile-pic.jpg'
+            }}
+            style={{ height: 50, width: 50, borderRadius: 50 }}
+          />
+          <View style={{ marginLeft: 10 }}>
+            <Text style={{ fontSize: 20 }}>{post.author.username}</Text>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={{ fontSize: 12 }}>{new Date(post.createdAt).toString().substring(0, 16)}</Text>
+              <Text style={{ fontSize: 12, marginLeft: 5 }}>{new Date(post.createdAt).getHours() + " : " + new Date(post.createdAt).getMinutes()}</Text>
+            </View>
+          </View>
+        </View>
 
-			<Image
-				source={require('../../../assets/plant1.png')}
-				style={{ height: 200, width: '100%' }}
-			/>
+        <Image
+          source={{ uri: post.postThumbnail}}
+          style={{ height: 200, width: '100%' }}
+        />
 
-			<Text style={styles.textContent}>Nguyen Thanh Long</Text>
+        <Text style={styles.textContent}>{post.postTitle}</Text>
 
-			<View style={{ height: 1, width: '100%', backgroundColor: '#3333' }} />
+        <View style={{ height: 1, width: '100%', backgroundColor: '#3333' }} />
 
-			<View style={{ flexDirection: 'row' }}>
-				<TouchableOpacity style={{ flex: 1, margin: 10 }}>
-					<Text style={{ textAlign: 'center', fontWeight: 'bold' }}>Like</Text>
-				</TouchableOpacity>
+        <View style={{ flexDirection: 'row' }}>
+          <TouchableOpacity style={{ flex: 1, margin: 10 }}>
+            <Text style={{ textAlign: 'center', fontWeight: 'bold' }}>Like</Text>
+          </TouchableOpacity>
 
-				<View style={{ backgroundColor: '#3333', height: '100%', width: 1 }} />
+          <View style={{ backgroundColor: '#3333', height: '100%', width: 1 }} />
 
-				<TouchableOpacity style={{ flex: 1, margin: 10 }}>
-					<Text style={{ textAlign: 'center', fontWeight: 'bold' }}>
-						Comment
-					</Text>
-				</TouchableOpacity>
-			</View>
-		</View>
+          <TouchableOpacity style={{ flex: 1, margin: 10 }}>
+            <Text style={{ textAlign: 'center', fontWeight: 'bold' }}>
+              Comment
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </TouchableOpacity>
 	)
 }
 

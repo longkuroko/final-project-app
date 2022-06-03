@@ -7,27 +7,27 @@ import {
   TouchableOpacity,
   ToastAndroid, FlatList, ActivityIndicator
 } from 'react-native'
-import MaterialIcon from 'react-native-vector-icons/AntDesign'
 import axios from "axios";
-import FeedCard from './FeedCard'
-import { UserContext } from '../../context/UserContext'
+import FeedCard from "./FeedCard";
+import {UserContext} from "../../context/UserContext";
 import {API_HOST} from "../../util/API";
 
-const Feed = ({ navigation }) => {
-	const userCTX = useContext(UserContext)
-	const { token } = userCTX.state
+
+const MyFeedList = ({ navigation }) => {
+  const userCTX = useContext(UserContext)
+  const token = JSON.parse(userCTX.state.token)
   const [posts, setPosts] = useState([])
   const [nextPage, setNextPage] = useState(1)
   const [loadingMore, setLoadingMore] = useState(false)
 
-
   const getPost = async (page, size ) => {
     const { data } = await axios.get(
-      `${API_HOST}/api/v1/mobile/post?page=${page}&page_size=${size}`,
+      `${API_HOST}/api/v1/mobile/post/my-posts?page=${page}&page_size=${size}`,
       {
         headers: {
           'x-private-key': 'MasdhaMASHF@adfn%sad',
-          'x-application-name': 'AFF-APP'
+          'x-application-name': 'AFF-APP',
+          Authorization: `Bearer ${token}`
         }
       }
     )
@@ -48,18 +48,8 @@ const Feed = ({ navigation }) => {
     setLoadingMore(false)
   }
 
-	const checkIsLogin = () => {
-		if (token === null) {
-			ToastAndroid.show(
-				'Bạn cần đăng nhập để thực chức năng này!',
-				ToastAndroid.SHORT
-			)
-		} else {
-			navigation.navigate('CreateFeed')
-		}
-	}
-	return (
-		<View style={styles.container}>
+  return (
+    <View style={styles.container}>
       <FlatList
         contentContainerStyle={{
           marginTop: 10,
@@ -79,29 +69,14 @@ const Feed = ({ navigation }) => {
           loadingMore && <ActivityIndicator size='large' color='#1C6DD0' />
         }
       />
-			<TouchableOpacity
-				onPress={() => checkIsLogin()}
-				style={{
-					position: 'absolute',
-					right: 60,
-					bottom: 60,
-					backgroundColor: '#39A2DB',
-					borderRadius: 30
-				}}>
-				<MaterialIcon
-					name='plus'
-					color='white'
-					size={15}
-					style={{ margin: 20 }}
-				/>
-			</TouchableOpacity>
-		</View>
-	)
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1
-	}
+  container: {
+    flex: 1
+  }
 })
-export default Feed
+
+export default MyFeedList;

@@ -227,7 +227,7 @@ const ProductDetail = ({ navigation, route }) => {
 													source={{
 														uri:
 															item.variantImageUrl !== null ||
-															item.variantImageUrl === ''
+															item.variantImageUrl !== ''
 																? item.variantImageUrl
 																: product.thumbnail
 													}}
