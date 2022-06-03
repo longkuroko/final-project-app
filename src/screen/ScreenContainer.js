@@ -10,6 +10,7 @@ import MyComponent from './Search/SearchingScreen'
 import ProductDetail from '../components/ProductDetail/ProductDetail'
 import ProfileNavigator from './Profile/ProfileStack'
 import Favourite from './Favourite/Favourite'
+import MyFeedList from "../components/Feed/MyFeedList";
 
 const Drawer = createDrawerNavigator()
 
@@ -168,6 +169,15 @@ const MainScreen = () => {
 					headerTitleAlign: 'center'
 				}}
 			/>
+      <Drawer.Screen
+        name='MyFeedList'
+        component={MyFeedList}
+        options={{
+          title: 'Danh sách bài đăng',
+          drawerItemStyle: { height: 0 },
+          headerTitleAlign: 'center'
+        }}
+      />
 			<Drawer.Screen
 				name='Detail'
 				component={ProductDetail}

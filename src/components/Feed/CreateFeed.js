@@ -1,23 +1,32 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
-	Text,
-	View,
-	StyleSheet,
-	TouchableOpacity,
-	ActivityIndicator,
-	ImageBackground,
-	TextInput
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator,
+  ImageBackground,
+  TextInput, ToastAndroid
 } from 'react-native'
 import AntIcon from 'react-native-vector-icons/AntDesign'
 import Entypo from 'react-native-vector-icons/Entypo'
 import * as ImagePicker from 'expo-image-picker'
 
 import { UserContext } from '../../context/UserContext'
+import axios from "axios";
+import {API_HOST} from "../../util/API";
 
 const CreateFeed = ({ navigation }) => {
-	const [textValue, setTextValue] = useState('')
+  const userCTX = useContext(UserContext)
+  const token = JSON.parse(userCTX.state.token)
 	const [image, setImage] = useState('')
 	const [isLoading, setIsLoading] = useState(false)
+  const [createFeed, setCreateFeed] = useState({
+    postTitle: null,
+    postThumbnail: null,
+    postContent: null,
+    postType:'tips'
+  })
 
 	const [hasGallaryPermission, setHasGallaryPermission] = useState(null)
 
@@ -67,10 +76,33 @@ const CreateFeed = ({ navigation }) => {
 			.then(res => res.json())
 			// eslint-disable-next-line no-shadow
 			.then(data => {
-				console.log(data)
-				setImage(data.url)
+        setImage(data.url)
+		    setCreateFeed({
+          ...createFeed, postThumbnail: data.url
+        })
 			})
 	}
+
+  const createPost = post => {
+    axios.post(
+      `${API_HOST}/api/v1/mobile/post`, post,  {
+        headers: {
+          'x-private-key': 'MasdhaMASHF@adfn%sad',
+          'x-application-name': 'AFF-APP',
+          Authorization: `Bearer ${token}`
+        }
+      }
+    ).then(res => {
+      if (res && res.data.status === 200) {
+        ToastAndroid.show('Tạo bài đăng thành công!', ToastAndroid.SHORT)
+        navigation.navigate('FeedNavigation')
+      }
+    }).catch(err => {
+      ToastAndroid.show('Đăng bài thất bại!', ToastAndroid.SHORT)
+      console.log(err)
+    })
+  }
+
 
 	return (
 		<View style={styles.container}>
@@ -104,13 +136,29 @@ const CreateFeed = ({ navigation }) => {
 					</TouchableOpacity>
 				</ImageBackground>
 			)}
-			<TextInput
-				style={styles.textInputContent}
-				placeholder='Nhập nội dụng...'
-				value={textValue}
-				onChangeText={content => setTextValue(content)}
-			/>
-			<TouchableOpacity style={styles.postButton}>
+      <View style={{ marginVertical: 5, margin: 5}}>
+        <Text style={{ fontSize: 20, fontWeight: '500'}}>Tiêu đề</Text>
+        <TextInput
+          style={styles.textInputContent}
+          placeholder='Nhập tiêu đề...'
+          value={createFeed.postTitle}
+          onChangeText={postTitle => {
+            setCreateFeed({...createFeed, postTitle })
+          }}
+        />
+      </View>
+      <View style={{ marginVertical: 5, margin: 5}}>
+        <Text style={{ fontSize: 20, fontWeight: '500'}}>Nội dung</Text>
+        <TextInput
+          style={styles.textInputContent}
+          placeholder='Nhập nội dụng...'
+          value={createFeed.postContent}
+          onChangeText={postContent => {
+            setCreateFeed({...createFeed, postContent })
+          }}
+        />
+      </View>
+			<TouchableOpacity style={styles.postButton} onPress={() =>createPost(createFeed)}>
 				<Text style={styles.postText}>Đăng bài</Text>
 			</TouchableOpacity>
 		</View>
@@ -138,7 +186,7 @@ const styles = StyleSheet.create({
 		margin: 10,
 		marginVertical: 10,
 		borderRadius: 10,
-		top: 250
+		top: 30
 	},
 	activityIndicator: {
 		position: 'absolute',

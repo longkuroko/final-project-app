@@ -109,10 +109,10 @@ const ScreenProfile = ({ navigation }) => {
 						<Text style={styles.menuItemText}>Chỉnh sửa thông tin</Text>
 					</View>
 				</TouchableRipple>
-				<TouchableRipple onPress={() => {}}>
+				<TouchableRipple onPress={() => navigation.navigate('MyFeedList')}>
 					<View style={styles.menuItem}>
-						<Icons name='settings' color='#2980B9' size={25} />
-						<Text style={styles.menuItemText}>Cài đặt</Text>
+						<Icons name='connected-tv' color='#2980B9' size={25} />
+						<Text style={styles.menuItemText}>Bài đăng của tôi</Text>
 					</View>
 				</TouchableRipple>
 				<TouchableRipple
