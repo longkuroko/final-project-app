@@ -12,6 +12,7 @@ export const USER_ACTION = {
 const UserInitialState = {
 	username: null,
 	token: null,
+	userId: null,
 	updateUpdate: {}
 }
 
@@ -19,7 +20,7 @@ const reducer = (state, action) => {
 	switch (action.type) {
 		case USER_ACTION.LOGIN:
 			// luu async
-			return { ...state, token: action.token }
+			return { ...state, token: action.token, userId: action.userId }
 
 		case USER_ACTION.LOGOUT:
 			return { ...state, token: null }

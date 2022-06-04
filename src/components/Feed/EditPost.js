@@ -17,15 +17,17 @@ import axios from 'axios'
 import { UserContext } from '../../context/UserContext'
 import { API_HOST } from '../../util/API'
 
-const CreateFeed = ({ navigation }) => {
+const EditPost = ({ route, navigation }) => {
+	const feed = route.params
 	const userCTX = useContext(UserContext)
 	const token = JSON.parse(userCTX.state.token)
 	const [image, setImage] = useState('')
 	const [isLoading, setIsLoading] = useState(false)
 	const [createFeed, setCreateFeed] = useState({
-		postTitle: null,
-		postThumbnail: null,
-		postContent: null,
+		postId: feed.postId,
+		postTitle: feed.postTitle,
+		postThumbnail: feed.postThumbnail,
+		postContent: feed.postContent,
 		postType: 'tips'
 	})
 
@@ -85,9 +87,9 @@ const CreateFeed = ({ navigation }) => {
 			})
 	}
 
-	const createPost = post => {
+	const updatePost = post => {
 		axios
-			.post(`${API_HOST}/api/v1/mobile/post`, post, {
+			.put(`${API_HOST}/api/v1/mobile/post`, post, {
 				headers: {
 					'x-private-key': 'MasdhaMASHF@adfn%sad',
 					'x-application-name': 'AFF-APP',
@@ -96,7 +98,7 @@ const CreateFeed = ({ navigation }) => {
 			})
 			.then(res => {
 				if (res && res.data.status === 200) {
-					ToastAndroid.show('Tạo bài đăng thành công!', ToastAndroid.SHORT)
+					ToastAndroid.show('Cập nhật thành công!', ToastAndroid.SHORT)
 					navigation.navigate('FeedNavigation')
 				}
 			})
@@ -162,8 +164,8 @@ const CreateFeed = ({ navigation }) => {
 			</View>
 			<TouchableOpacity
 				style={styles.postButton}
-				onPress={() => createPost(createFeed)}>
-				<Text style={styles.postText}>Đăng bài</Text>
+				onPress={() => updatePost(createFeed)}>
+				<Text style={styles.postText}>Cập nhật</Text>
 			</TouchableOpacity>
 		</View>
 	)
@@ -211,4 +213,4 @@ const styles = StyleSheet.create({
 		paddingLeft: 16
 	}
 })
-export default CreateFeed
+export default EditPost

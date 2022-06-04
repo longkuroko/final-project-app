@@ -43,9 +43,10 @@ const ComponentLogin = ({ navigation }) => {
 			.then(res => {
 				if (res) {
 					const token = JSON.stringify(res.data.token)
+					const { userId } = res.data.user
 					setNotification({ type: true, message: '', isShow: true })
 					// AsyncStorage.setItem('token', token)
-					userCTX.login(USER_ACTION.LOGIN, token)
+					userCTX.login(USER_ACTION.LOGIN, token, userId)
 					ToastAndroid.show('Đăng nhập thành công !', ToastAndroid.SHORT)
 					navigation.navigate('Home')
 				}

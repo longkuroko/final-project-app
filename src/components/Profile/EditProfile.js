@@ -211,7 +211,7 @@ const EditProfile = ({ navigation }) => {
 						placeholderTextColor='#666666'
 						autoCorrect={false}
 						style={styles.textInput}
-            value={updateProfile.fullname}
+						value={updateProfile.fullname}
 						onChangeText={fullname => {
 							setUpdateProfile({ ...updateProfile, fullname })
 						}}
