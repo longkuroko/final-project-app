@@ -130,7 +130,7 @@ const FeedDetail = ({ route, navigation }) => {
 			.then(res => {
 				if (res && res.data.status === 200) {
 					ToastAndroid.show('Xóa Thành công!', ToastAndroid.SHORT)
-					navigation.navigate('Feed')
+					navigation.navigate('MyFeedList', true)
 				}
 			})
 			.catch(err => {
@@ -240,7 +240,9 @@ const FeedDetail = ({ route, navigation }) => {
 					)}
 				/>
 			</View>
-			<KeyboardAvoidingView behavior='padding' style={styles.writeComment}>
+			<KeyboardAvoidingView
+        behavior='padding'
+        style={{flex: 1, ...styles.writeComment}}>
 				<TextInput
 					style={styles.input}
 					value={comment.content}

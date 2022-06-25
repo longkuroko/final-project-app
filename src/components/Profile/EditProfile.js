@@ -40,8 +40,7 @@ const EditProfile = ({ navigation }) => {
 			const galleryStatus =
 				await ImagePicker.requestMediaLibraryPermissionsAsync()
 			setHasGallaryPermission(galleryStatus.status === 'granted')
-		})()
-	}, [token])
+		})()}, [token] )
 
 	useEffect(() => {
 		axios
@@ -59,7 +58,7 @@ const EditProfile = ({ navigation }) => {
 					setUpdateProfile({
 						username: response.data.username,
 						email: response.data.email,
-						phone: response.data.phoneNumber,
+						phoneNumber: response.data.phoneNumber,
 						fullname: response.data.fullname,
 						imgUrl: response.data.imgUrl
 					})
@@ -120,7 +119,7 @@ const EditProfile = ({ navigation }) => {
 		console.log(`Bearer ${token}`)
 		Keyboard.dismiss()
 		axios
-			.put(`${API_HOST}/api/v1/profile/update`, user, {
+			.post(`${API_HOST}/api/v1/mobile/user`, user, {
 				headers: {
 					'x-private-key': 'MasdhaMASHF@adfn%sad',
 					'x-application-name': 'AFF-APP',
@@ -241,7 +240,7 @@ const EditProfile = ({ navigation }) => {
 						keyboardType='number-pad'
 						autoCorrect={false}
 						style={styles.textInput}
-						value={updateProfile.phone}
+						value={updateProfile.phoneNumber}
 						onChangeText={phone => {
 							setUpdateProfile({ ...updateProfile, phone })
 						}}

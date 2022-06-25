@@ -23,6 +23,9 @@ const FeedCard = ({ post, navigation }) => {
 							).getHours()} : ${new Date(post.createdAt).getMinutes()}`}</Text>
 						</View>
 					</View>
+          <View style={{marginLeft: 100}}>
+            <Text style={{fontSize: 20, fontWeight: "500"}}>View: {post.totalView}</Text>
+          </View>
 				</View>
 
 				<Image

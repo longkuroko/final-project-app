@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { TextInput, View, Text, ActivityIndicator } from 'react-native'
+import {TextInput, View, Text, ActivityIndicator, ToastAndroid, ScrollView} from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useFonts } from 'expo-font'
 import axios from 'axios'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { styles } from './ComponentRegister.style'
 import { API_HOST } from '../../../util/API'
-import Notification from '../../Notification'
 
 const ComponentRegister = ({ navigation }) => {
 	const [account, setAccount] = useState({
@@ -120,13 +119,10 @@ const ComponentRegister = ({ navigation }) => {
 					}
 				})
 				.then(res => {
-					if (res.data) {
+					if (res.data && res.status === 201) {
 						console.log(res.data)
-						setNotifice({
-							type: true,
-							message: 'Đăng ký thành công',
-							isShow: true
-						})
+            ToastAndroid.show('Đăng kí thành công!', ToastAndroid.SHORT)
+            navigation.navigate('ScreenLogin')
 					}
 				})
 				.catch(err => {

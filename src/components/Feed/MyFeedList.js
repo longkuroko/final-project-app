@@ -14,12 +14,13 @@ import FeedCard from './FeedCard'
 import { UserContext } from '../../context/UserContext'
 import { API_HOST } from '../../util/API'
 
-const MyFeedList = ({ navigation }) => {
+const MyFeedList = ({ navigation, loading }) => {
 	const userCTX = useContext(UserContext)
 	const token = JSON.parse(userCTX.state.token)
 	const [posts, setPosts] = useState([])
 	const [nextPage, setNextPage] = useState(1)
 	const [loadingMore, setLoadingMore] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
 	const getPost = async (page, size) => {
 		const { data } = await axios.get(
@@ -36,7 +37,8 @@ const MyFeedList = ({ navigation }) => {
 	}
 	useEffect(() => {
 		getPost(1, 12)
-	}, [])
+    setIsLoading(loading)
+	}, [isLoading])
 
 	let stopLoadMore = true
 	const handleOnEndReached = async () => {

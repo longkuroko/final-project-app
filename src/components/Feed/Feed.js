@@ -21,6 +21,7 @@ const Feed = ({ navigation }) => {
 	const [posts, setPosts] = useState([])
 	const [nextPage, setNextPage] = useState(1)
 	const [loadingMore, setLoadingMore] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
 	const getPost = async (page, size) => {
 		const { data } = await axios.get(
@@ -36,7 +37,7 @@ const Feed = ({ navigation }) => {
 	}
 	useEffect(() => {
 		getPost(1, 12)
-	}, [])
+	}, [isLoading])
 
 	let stopLoadMore = true
 	const handleOnEndReached = async () => {

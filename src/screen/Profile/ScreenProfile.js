@@ -74,9 +74,9 @@ const ScreenProfile = ({ navigation }) => {
 
 			<View style={styles.userInfoSection}>
 				<View style={styles.row}>
-					<Icon name='map-marker-radius' color='#777777' size={20} />
+					<Icon name='account' color='#777777' size={20} />
 					<Text style={{ color: '#777777', marginLeft: 20 }}>
-						Ho Chi Minh, Vietnam
+            {profile.fullname}
 					</Text>
 				</View>
 				<View style={styles.row}>

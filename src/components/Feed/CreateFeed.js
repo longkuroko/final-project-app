@@ -95,9 +95,9 @@ const CreateFeed = ({ navigation }) => {
 				}
 			})
 			.then(res => {
-				if (res && res.data.status === 200) {
+				if (res) {
 					ToastAndroid.show('Tạo bài đăng thành công!', ToastAndroid.SHORT)
-					navigation.navigate('FeedNavigation')
+					navigation.navigate('Feed')
 				}
 			})
 			.catch(err => {

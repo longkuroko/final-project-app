@@ -23,7 +23,7 @@ const EditPost = ({ route, navigation }) => {
 	const token = JSON.parse(userCTX.state.token)
 	const [image, setImage] = useState('')
 	const [isLoading, setIsLoading] = useState(false)
-	const [createFeed, setCreateFeed] = useState({
+	const [editPost, setEditPost] = useState({
 		postId: feed.postId,
 		postTitle: feed.postTitle,
 		postThumbnail: feed.postThumbnail,
@@ -39,7 +39,7 @@ const EditPost = ({ route, navigation }) => {
 				await ImagePicker.requestMediaLibraryPermissionsAsync()
 			setHasGallaryPermission(galleryStatus.status === 'granted')
 		})()
-	})
+	}, [feed.postId])
 
 	const pickImage = async () => {
 		const images = await ImagePicker.launchImageLibraryAsync({
@@ -80,12 +80,39 @@ const EditPost = ({ route, navigation }) => {
 			// eslint-disable-next-line no-shadow
 			.then(data => {
 				setImage(data.url)
-				setCreateFeed({
-					...createFeed,
+				setEditPost({
+					...editPost,
 					postThumbnail: data.url
 				})
 			})
 	}
+
+  const getPostDetail = (postId) => {
+      axios.get(`${API_HOST}/api/v1/mobile/post/detail/${postId}`, {
+        headers: {
+          'x-private-key': 'MasdhaMASHF@adfn%sad',
+          'x-application-name': 'AFF-APP',
+          Authorization: `Bearer ${token}`
+        }
+      }).then(res => {
+        if (res && res.data) {
+          console.log(res.data);
+          setEditPost({
+            postId: res.data.postId,
+            postTitle: res.data.postTitle,
+            postThumbnail: res.data.postThumbnail,
+            postContent: res.data.postContent,
+            ...editPost
+          })
+        }
+      }).catch(err => console.log(err))
+  }
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  // useEffect(() => {
+  //   getPostDetail(feed.postId)
+  // },[feed.postId])
+
 
 	const updatePost = post => {
 		axios
@@ -131,7 +158,7 @@ const EditPost = ({ route, navigation }) => {
 				</TouchableOpacity>
 			) : (
 				<ImageBackground
-					source={{ uri: image }}
+					source={{ uri: editPost.postThumbnail }}
 					style={{ height: 200, alignItems: 'flex-end' }}>
 					<TouchableOpacity
 						onPress={() => setImage('')}
@@ -145,9 +172,9 @@ const EditPost = ({ route, navigation }) => {
 				<TextInput
 					style={styles.textInputContent}
 					placeholder='Nhập tiêu đề...'
-					value={createFeed.postTitle}
+					value={editPost.postTitle}
 					onChangeText={postTitle => {
-						setCreateFeed({ ...createFeed, postTitle })
+						setEditPost({ ...editPost, postTitle })
 					}}
 				/>
 			</View>
@@ -156,15 +183,15 @@ const EditPost = ({ route, navigation }) => {
 				<TextInput
 					style={styles.textInputContent}
 					placeholder='Nhập nội dụng...'
-					value={createFeed.postContent}
+					value={editPost.postContent}
 					onChangeText={postContent => {
-						setCreateFeed({ ...createFeed, postContent })
+						setEditPost({ ...editPost, postContent })
 					}}
 				/>
 			</View>
 			<TouchableOpacity
 				style={styles.postButton}
-				onPress={() => updatePost(createFeed)}>
+				onPress={() => updatePost(editPost)}>
 				<Text style={styles.postText}>Cập nhật</Text>
 			</TouchableOpacity>
 		</View>
