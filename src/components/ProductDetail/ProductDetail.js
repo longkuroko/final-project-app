@@ -70,6 +70,11 @@ const ProductDetail = ({ navigation, route }) => {
 		currency: 'VND'
 	}).format(productIndex.listPrice)
 
+  const salePrice =  new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND'
+  }).format(productIndex.salePrice)
+
 	useFonts({
 		// eslint-disable-next-line global-require
 		Nunito: require('../../../assets/fonts/Nunito-ExtraLight.ttf')
@@ -94,6 +99,7 @@ const ProductDetail = ({ navigation, route }) => {
 						originalUrl: res.data.items[0].originalUrl,
 						description: res.data.items[0].description,
 						listPrice: res.data.items[0].variants[0].listPrice,
+            salePrice: res.data.items[0].variants[0].salePrice,
 						color: res.data.items[0].variants[0].variantName,
 						productId: res.data.items[0].productId
 					})
@@ -198,8 +204,11 @@ const ProductDetail = ({ navigation, route }) => {
 							</Text>
 						</View>
 						<View style={{ paddingHorizontal: 16 }}>
-							<Text style={styles.productPriceText}>{formatCurrency}</Text>
+							<Text style={{...styles.productPriceText, color: '#DD2C00',}}>{salePrice}</Text>
 						</View>
+            <View style={{ paddingHorizontal: 16 }}>
+              <Text style={{...styles.productPriceText, textDecorationLine: 'line-through', color: '#748DA6'}}>{formatCurrency}</Text>
+            </View>
 						<View style={styles.comparingBox}>
 							<Text style={styles.comparingText}>Lựa chọn</Text>
 							<View style={{ flexDirection: 'row' }}>
@@ -354,7 +363,6 @@ const styles = StyleSheet.create({
 		fontSize: 18,
 		fontWeight: '700',
 		maxWidth: '85%',
-		color: '#DD2C00',
 		marginBottom: 4
 	},
 	productOptionText: {

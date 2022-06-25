@@ -25,7 +25,7 @@ export const styles = StyleSheet.create({
 		marginLeft: 20
 	},
 	card: {
-		height: 200,
+		height: 230,
 		backgroundColor: '#F1F1F1',
 		marginHorizontal: 2,
 		width,
